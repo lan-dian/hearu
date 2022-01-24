@@ -1,0 +1,20 @@
+{
+  "serverUrl": "http://localhost:8002",
+  "outPath": "src/main/resources/static/doc",
+  "isStrict": false,
+  "allInOne": true,
+  "createDebugPage": true,
+  "packageFilters": "com.landao.hearu.controller.*",
+  "inlineEnum": true,
+  "style":"xt256",
+  "allInOneDocFileName": "index.html",
+  "requestHeaders": [{
+    "name": "Authorization",
+    "type": "string",
+    "desc": "Bearer token",
+    "value":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5bi454-C5rSBIiwic3R1ZGVudF9pZCI6MjAyMDIxNzk0NH0.EAyfOCBvF4FSdwEfPE3HaCh6eyjZejFU0C7mewDr1iM",
+    "required": true,
+    "pathPatterns": "/**",
+    "excludePathPatterns":"/api/**"
+  }]
+}
