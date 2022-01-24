@@ -5,6 +5,7 @@ import com.landao.hearu.entity.User;
 import com.landao.hearu.entity.UserRole;
 import com.landao.hearu.model.enums.RoleEnum;
 import com.landao.hearu.model.exception.BusinessException;
+import com.landao.hearu.model.user.LoginVO;
 import com.landao.hearu.model.user.UserInfo;
 import com.landao.hearu.service.IUserRoleService;
 import com.landao.hearu.service.IUserService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,6 +24,22 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     IUserRoleService iUserRoleService;
+
+    @Override
+    public LoginVO login(String telephone, String password){
+        //查询用户
+        User user = iUserService.lambdaQuery()
+                .eq(User::getTelephone, telephone).one();
+        if(user==null){
+            throw new BusinessException("用户不存在,请先注册");
+        }
+        user.checkPassword(password);
+
+        //获取角色列表
+        Set<RoleEnum> roles = iUserRoleService.getRoles(user.getId());
+
+        return new LoginVO(user,roles);
+    }
 
 
     @Override

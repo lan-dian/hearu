@@ -2,6 +2,9 @@ package com.landao.hearu.service;
 
 import com.landao.hearu.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.landao.hearu.model.enums.RoleEnum;
+
+import java.util.Set;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-01-24
  */
 public interface IUserRoleService extends IService<UserRole> {
+
+    Set<RoleEnum> getRoles(Long userId);
 
 }

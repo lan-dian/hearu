@@ -2,6 +2,7 @@ package com.landao.hearu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.user.UserInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * <p>
@@ -77,5 +79,14 @@ public class User implements Serializable {
         return user;
     }
 
+    /**
+     * 检查密码是否正确
+     * @param password 待检测的密码
+     */
+    public void checkPassword(String password){
+        if(!Objects.equals(password,this.password)){
+            throw new BusinessException("密码错误");
+        }
+    }
 
 }

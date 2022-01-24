@@ -1,7 +1,5 @@
 package com.landao.hearu.controller;
 
-import com.landao.hearu.model.common.CommonResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,15 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
 
 
-    /**
-     * 日志测试接口
-     * @return
-     */
-    @GetMapping("/test")
-    public CommonResult<Void> test(){
-        CommonResult<Void> result=new CommonResult<>();
-        return result;
-    }
 
 
 }
