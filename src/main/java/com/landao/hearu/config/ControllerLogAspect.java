@@ -1,8 +1,10 @@
 package com.landao.hearu.config;
 
 
+import com.landao.hearu.model.enums.RoleEnum;
 import com.landao.hearu.model.user.BaseUserInfoDTO;
-import com.landao.hearu.service.IRequestLogService;
+import com.landao.hearu.safe.SafeUtil;
+import com.landao.hearu.service.IUserRoleService;
 import com.landao.hearu.util.RequestLogUtil;
 import com.landao.hearu.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * 控制器日志切面
@@ -24,7 +27,7 @@ import javax.annotation.Resource;
 public class ControllerLogAspect {
 
     @Resource
-    IRequestLogService requestLogService;
+    IUserRoleService iUserRoleService;
 
 
     @Around("execution(public * com.landao.hearu.controller.*.*(..))")
@@ -33,23 +36,14 @@ public class ControllerLogAspect {
         RequestLogUtil.startLog(proceedingJoinPoint);
 
         if(TokenUtil.hasToken()){//token预处理
-            try {
-                BaseUserInfoDTO baseUserInfo = TokenUtil.parseToken(TokenUtil.getAuthorization());
-                TokenUtil.setBaseUserInfo(baseUserInfo);
-            }catch (Exception e){
-                //do nothing
-            }
+            BaseUserInfoDTO baseUserInfo = TokenUtil.parseToken(TokenUtil.getAuthorization());
+            TokenUtil.setBaseUserInfo(baseUserInfo);
+            Set<RoleEnum> roles = iUserRoleService.getRoles(baseUserInfo.getUserId());
+            SafeUtil.setRoles(roles);
         }
 
 
-
-        Object proceedResult=null;
-
-        try {
-            proceedResult = proceedingJoinPoint.proceed();
-        }catch (Throwable e){
-            throw e;
-        }
+        Object proceedResult = proceedingJoinPoint.proceed();
 
         if(proceedResult!=null){//正常返回
             RequestLogUtil.endLog(proceedResult);

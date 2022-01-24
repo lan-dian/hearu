@@ -7,6 +7,7 @@ import com.landao.hearu.model.user.LoginVO;
 import com.landao.hearu.model.user.UserInfo;
 import com.landao.hearu.model.user.UserInfoVO;
 import com.landao.hearu.safe.annotations.RequiredLogin;
+import com.landao.hearu.util.TokenUtil;
 import com.landao.hearu.util.check.CheckUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +32,15 @@ public class UserController {
     public CommonResult<UserInfoVO> info(){
         CommonResult<UserInfoVO> result=new CommonResult<>();
 
-        return result;
+        UserInfoVO userInfo = userService.getUserInfo(TokenUtil.getUserId());
+
+        return result.body(userInfo);
     }
 
     /**
      * 用户登陆
-     * @param telephone 电话号码
-     * @param password 密码(md5加密)
+     * @param telephone 电话号码|13034744809
+     * @param password 密码(md5加密)|e10adc3949ba59abbe56e057f20f883e
      */
     @PostMapping("/login")
     public CommonResult<LoginVO> login(@RequestParam String telephone, @RequestParam String password){

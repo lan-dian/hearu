@@ -43,7 +43,7 @@ public class TokenUtil {
         if(tokenInfo.length!=2){
             throw new BusinessException("token格式错误");
         }
-        if(Objects.equals("Bearer",tokenInfo[0])){
+        if(!Objects.equals("Bearer",tokenInfo[0])){
             throw new BusinessException("token必须以Bearer开头");
         }
         Claim userId=null;

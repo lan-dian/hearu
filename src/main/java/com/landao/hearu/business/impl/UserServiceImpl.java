@@ -7,6 +7,7 @@ import com.landao.hearu.model.enums.RoleEnum;
 import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.user.LoginVO;
 import com.landao.hearu.model.user.UserInfo;
+import com.landao.hearu.model.user.UserInfoVO;
 import com.landao.hearu.service.IUserRoleService;
 import com.landao.hearu.service.IUserService;
 import org.springframework.dao.DuplicateKeyException;
@@ -24,6 +25,12 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     IUserRoleService iUserRoleService;
+
+    @Override
+    public UserInfoVO getUserInfo(Long userId){
+        User user = iUserService.getById(userId);
+        return UserInfoVO.convert(user);
+    }
 
     @Override
     public LoginVO login(String telephone, String password){

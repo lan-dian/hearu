@@ -35,11 +35,7 @@ public class LoginAspect {
             }
         }
 
-        try {
-            return point.proceed();
-        }catch (Throwable e){
-            throw e;
-        }
+        return point.proceed();
     }
 
 

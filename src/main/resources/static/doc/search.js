@@ -12,12 +12,6 @@ api[0].list.push({
     desc: '公共访问接口',
     list: []
 })
-api[0].list[0].list.push({
-    order: '1',
-    deprecated: 'false',
-    url: 'http://localhost:8002/api/test',
-    desc: '日志测试接口',
-});
 api[0].list.push({
     alias: 'UserController',
     order: '2',
@@ -28,11 +22,17 @@ api[0].list.push({
 api[0].list[1].list.push({
     order: '1',
     deprecated: 'false',
+    url: 'http://localhost:8002/user/info',
+    desc: '获取用户基本信息',
+});
+api[0].list[1].list.push({
+    order: '2',
+    deprecated: 'false',
     url: 'http://localhost:8002/user/login',
     desc: '用户登陆',
 });
 api[0].list[1].list.push({
-    order: '2',
+    order: '3',
     deprecated: 'false',
     url: 'http://localhost:8002/user/register',
     desc: '用户注册',

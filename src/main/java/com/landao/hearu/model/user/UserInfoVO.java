@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Data
 @NoArgsConstructor
@@ -43,7 +44,7 @@ public class UserInfoVO {
     /**
      * 生日
      */
-    private LocalDate birth;
+    private Integer age;
 
     public static UserInfoVO convert(User user){
         UserInfoVO userInfoVO = new UserInfoVO();
@@ -53,7 +54,11 @@ public class UserInfoVO {
         userInfoVO.setSex(user.getSex());
         userInfoVO.setAvatar(user.getAvatar());
         userInfoVO.setSignature(user.getSignature());
-        userInfoVO.setBirth(user.getBirth());
+        //计算年龄
+        LocalDate birth = user.getBirth();
+        LocalDate now = LocalDate.now();
+        int age = Period.between(birth, now).getYears()+1;
+        userInfoVO.setAge(age);
         return userInfoVO;
     }
 
