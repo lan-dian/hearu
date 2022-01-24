@@ -1,12 +1,14 @@
 package com.landao.hearu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.landao.hearu.model.user.UserInfo;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -17,7 +19,7 @@ import lombok.experimental.Accessors;
  * @since 2022-01-24
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 @Accessors(chain = true)
 public class User implements Serializable {
 
@@ -60,6 +62,20 @@ public class User implements Serializable {
      * 生日
      */
     private LocalDate birth;
+
+
+    public static User convert(UserInfo userInfo){
+        User user = new User();
+        user.setId(userInfo.getId());
+        user.setName(userInfo.getName());
+        user.setTelephone(userInfo.getTelephone());
+        user.setPassword(userInfo.getPassword());
+        user.setSex(userInfo.getSex());
+        user.setAvatar(userInfo.getAvatar());
+        user.setSignature(userInfo.getSignature());
+        user.setBirth(userInfo.getBirth());
+        return user;
+    }
 
 
 }

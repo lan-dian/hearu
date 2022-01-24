@@ -2,10 +2,12 @@ package com.landao.hearu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.landao.hearu.model.enums.RoleEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -36,7 +38,7 @@ public class UserRole implements Serializable {
     /**
      * 角色编号
      */
-    private Integer role;
+    private RoleEnum role;
 
 
 }

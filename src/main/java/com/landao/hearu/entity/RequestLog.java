@@ -8,7 +8,6 @@ import com.landao.hearu.model.common.LogDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -76,10 +75,18 @@ public class RequestLog implements Serializable {
     private String classMethod;
 
 
-    public RequestLog(LogDTO logDTO){
-        BeanUtils.copyProperties(logDTO,this);
+    public static RequestLog convert(LogDTO logDTO){
         long endTime = System.currentTimeMillis();
-        timeConsume= Math.toIntExact(endTime - logDTO.getStartTime());
+        RequestLog requestLog = new RequestLog();
+        requestLog.setUserId(logDTO.getUserId());
+        requestLog.setUrl(logDTO.getUrl());
+        requestLog.setArgs(logDTO.getArgs());
+        requestLog.setReturns(logDTO.getReturns());
+        requestLog.setTimeConsume(Math.toIntExact(endTime - logDTO.getStartTime()));
+        requestLog.setCreateTime(logDTO.getCreateTime());
+        requestLog.setName(logDTO.getName());
+        requestLog.setClassMethod(logDTO.getClassMethod());
+        return requestLog;
     }
 
 

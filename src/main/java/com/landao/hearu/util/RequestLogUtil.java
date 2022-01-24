@@ -49,12 +49,12 @@ public class RequestLogUtil {
         //设置用户信息
         logDTO.setUserInfo();
 
-        RequestLog requestLog = new RequestLog(logDTO);
-        // try {
+        RequestLog requestLog = RequestLog.convert(logDTO);
+        try {
             iRequestLogService.save(requestLog);
-        // }catch (Exception e){
-        //     //未知异常
-        // }
+        }catch (Exception e){
+            //未知异常
+        }
     }
 
     public static void setLogDTO(LogDTO logDTO){

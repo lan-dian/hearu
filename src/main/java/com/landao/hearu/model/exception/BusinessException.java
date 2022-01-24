@@ -24,6 +24,12 @@ public class BusinessException extends RuntimeException{
         this.data=null;
     }
 
+    public BusinessException(String msg,Integer code){
+        this.code=code;
+        this.msg=msg;
+        this.data=null;
+    }
+
 
     public BusinessException(Object data,String msg,Integer code){
         this.code=code;

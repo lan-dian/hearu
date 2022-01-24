@@ -34,11 +34,6 @@ public class LogDTO {
     private String returns;
 
     /**
-     * 毫秒,访问耗时
-     */
-    private Integer timeConsume;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createTime;

@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 @Aspect
 @Order(1)
 @Component
-public class ControllerAspectLog {
+public class ControllerLogAspect {
 
     @Resource
     IRequestLogService requestLogService;

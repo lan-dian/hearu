@@ -18,6 +18,19 @@ api[0].list[0].list.push({
     url: 'http://localhost:8002/api/test',
     desc: '日志测试接口',
 });
+api[0].list.push({
+    alias: 'UserController',
+    order: '2',
+    link: '',
+    desc: '',
+    list: []
+})
+api[0].list[1].list.push({
+    order: '1',
+    deprecated: 'false',
+    url: 'http://localhost:8002/user/register',
+    desc: '用户注册',
+});
 document.onkeydown = keyDownSearch;
 function keyDownSearch(e) {
     const theEvent = e;
