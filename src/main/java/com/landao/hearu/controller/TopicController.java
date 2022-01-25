@@ -59,7 +59,6 @@ public class TopicController {
         return result.ok(comment);
     }
 
-
     /**
      * 给话题点赞
      */
@@ -83,8 +82,9 @@ public class TopicController {
 
         CheckUtil.checkId(topicId);
 
+        boolean unlikeTopic = topicService.unlikeTopic(topicId);
 
-        return result;
+        return result.ok(unlikeTopic,"你还没有点过赞呢");
     }
 
 

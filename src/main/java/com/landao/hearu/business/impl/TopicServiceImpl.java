@@ -31,6 +31,16 @@ public class TopicServiceImpl implements TopicService {
     IUserService iUserService;
 
     @Override
+    public boolean unlikeTopic(Long topicId){
+        Long userId = TokenUtil.getUserId();
+
+        return iTopicLikeService.lambdaUpdate()
+                .eq(TopicLike::getTopicId, topicId)
+                .eq(TopicLike::getUserId, userId)
+                .remove();
+    }
+
+    @Override
     public boolean likeTopic(Long topicId){
         Long userId = TokenUtil.getUserId();
 
