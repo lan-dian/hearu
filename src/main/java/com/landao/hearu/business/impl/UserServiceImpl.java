@@ -26,6 +26,23 @@ public class UserServiceImpl implements UserService {
     @Resource
     IUserRoleService iUserRoleService;
 
+
+    @Override
+    public boolean changePassword(Long userId, String oldPassword, String newPassword){
+        Integer count = iUserService.lambdaQuery()
+                .eq(User::getId, userId)
+                .eq(User::getPassword, oldPassword)
+                .count();
+        if(count==0){
+            throw new BusinessException("原密码错误");
+        }
+
+        return iUserService.lambdaUpdate()
+                .set(User::getPassword, newPassword)
+                .eq(User::getId, userId)
+                .update();
+    }
+
     @Override
     public boolean changeUserInfo(UserInfo userInfo) {
         User user = User.convert(userInfo);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * 用户相关
@@ -76,17 +77,46 @@ public class UserController {
     /**
      * 修改个人信息
      * @param userInfo 不要传递telephone和password
-     * userId 必须传递
+     * userId 也不需要传递
      */
+    @RequiredLogin
     @PostMapping("/change/info")
     public CommonResult<Void> changeInfo(@RequestBody UserInfo userInfo){
         CommonResult<Void> result=new CommonResult<>();
+        userInfo.setId(TokenUtil.getUserId());
+        userInfo.updateCheck();
 
         boolean update = userService.changeUserInfo(userInfo);
 
         return result.ok(update);
     }
 
+    /**
+     * 修改密码
+     * @param oldPassword 原密码
+     * @param newPassword 新密码
+     * @apiNote 两个都用md5加密
+     */
+    @RequiredLogin
+    @PostMapping("/change/password")
+    public CommonResult<Void> changePassword(@RequestParam String oldPassword,@RequestParam String newPassword){
+        CommonResult<Void> result=new CommonResult<>();
 
+        CheckUtil.checkNotBlank(oldPassword,"旧密码");
+        if(oldPassword.length()!=32){
+            return result.err("旧密码请用md5加密");
+        }
+        CheckUtil.checkNotBlank(newPassword,"新密码");
+        if(newPassword.length()!=32){
+            return result.err("新密码请用md5加密");
+        }
+        if(Objects.equals(oldPassword,newPassword)){
+            return result.err("新密码不能和旧密码相同");
+        }
+
+        boolean update = userService.changePassword(TokenUtil.getUserId(),oldPassword,newPassword);
+
+        return result.ok(update);
+    }
 
 }
