@@ -1,14 +1,18 @@
 package com.landao.hearu.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.landao.hearu.model.enums.TopicType;
+import com.landao.hearu.model.topic.TopicInfo;
+import com.landao.hearu.util.TokenUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -58,7 +62,18 @@ public class Topic implements Serializable {
     /**
      * 类别
      */
-    private Integer type;
+    private TopicType type;
+
+    public static Topic convert(TopicInfo topicInfo,TopicType topicType){
+        Topic topic = new Topic();
+        topic.setId(topicInfo.getId());
+        topic.setTitle(topicInfo.getTitle());
+        topic.setContent(topicInfo.getContent());
+        topic.setUserId(TokenUtil.getUserId());
+        topic.setType(topicType);
+        return topic;
+
+    }
 
 
 }
