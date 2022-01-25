@@ -73,4 +73,20 @@ public class UserController {
         return result.ok(save);
     }
 
+    /**
+     * 修改个人信息
+     * @param userInfo 不要传递telephone和password
+     * userId 必须传递
+     */
+    @PostMapping("/change/info")
+    public CommonResult<Void> changeInfo(@RequestBody UserInfo userInfo){
+        CommonResult<Void> result=new CommonResult<>();
+
+        boolean update = userService.changeUserInfo(userInfo);
+
+        return result.ok(update);
+    }
+
+
+
 }

@@ -70,6 +70,12 @@ public class UserInfo extends BaseCheckInfo {
     @FieldCheck(value = "生日")
     private LocalDate birth;
 
+    @Override
+    public void updateCheck() {
+        super.updateCheck();
+        this.telephone=null;
+        this.password=null;
+    }
 
     @Override
     protected void commonCheck() {

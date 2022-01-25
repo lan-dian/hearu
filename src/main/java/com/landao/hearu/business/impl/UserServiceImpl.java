@@ -27,6 +27,13 @@ public class UserServiceImpl implements UserService {
     IUserRoleService iUserRoleService;
 
     @Override
+    public boolean changeUserInfo(UserInfo userInfo) {
+        User user = User.convert(userInfo);
+        return iUserService.updateById(user);
+    }
+
+
+    @Override
     public UserInfoVO getUserInfo(Long userId){
         User user = iUserService.getById(userId);
         return UserInfoVO.convert(user);
@@ -75,6 +82,7 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
 
 
 

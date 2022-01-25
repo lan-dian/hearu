@@ -13,4 +13,6 @@ public interface UserService {
 
     boolean registerUser(UserInfo userInfo, RoleEnum roleEnum);
 
+    boolean changeUserInfo(UserInfo userInfo);
+
 }
