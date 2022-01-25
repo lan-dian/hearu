@@ -4,6 +4,10 @@ package com.landao.hearu.util.check.enums;
 public enum CheckType {
 
     /**
+     * 根据类型和BaseCheck自动判断
+     */
+    Auto,
+    /**
      * 数字不能为负数
      */
     NotNegative,

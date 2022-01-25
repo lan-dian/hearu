@@ -5,7 +5,6 @@ import com.landao.hearu.model.common.BaseCheckInfo;
 import com.landao.hearu.util.check.CheckUtil;
 import com.landao.hearu.util.check.annotaions.FieldCheck;
 import com.landao.hearu.util.check.enums.BaseCheck;
-import com.landao.hearu.util.check.enums.CheckType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,7 @@ public class UserInfo extends BaseCheckInfo {
      * 用户名
      * @apiNote 最大长度32
      */
-    @FieldCheck(value = "用户名",maxLength = 32,baseCheck = BaseCheck.NotBlack,checkType = CheckType.LengthLimit)
+    @FieldCheck(value = "用户名",maxLength = 32)
     private String name;
 
     /**
@@ -40,28 +39,28 @@ public class UserInfo extends BaseCheckInfo {
      * 密码
      * @apiNote md5加密后传递
      */
-    @FieldCheck(value = "密码",maxLength = 32,baseCheck = BaseCheck.NotBlack,checkType = CheckType.LengthLimit)
+    @FieldCheck(value = "密码",maxLength = 32)
     private String password;
 
     /**
      * 性别
      * @apiNote 必须为男或女
      */
-    @FieldCheck(value = "性别",maxLength = 1,baseCheck = BaseCheck.NotBlack,checkType = CheckType.LengthLimit)
+    @FieldCheck(value = "性别",maxLength = 1)
     private String sex;
 
     /**
      * 头像
      * @apiNote 可以为空
      */
-    @FieldCheck(value = "头像",maxLength = 128,baseCheck = BaseCheck.CanNull,checkType = CheckType.LengthLimit)
+    @FieldCheck(value = "头像",maxLength = 128,baseCheck = BaseCheck.CanNull)
     private String avatar;
 
     /**
      * 个性签名
      * @apiNote 可以为空
      */
-    @FieldCheck(value = "个性签名",maxLength =64,baseCheck = BaseCheck.CanNull,checkType = CheckType.LengthLimit)
+    @FieldCheck(value = "个性签名",maxLength =64,baseCheck = BaseCheck.CanNull)
     private String signature;
 
     /**

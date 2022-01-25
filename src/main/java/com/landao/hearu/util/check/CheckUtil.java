@@ -50,7 +50,7 @@ public class CheckUtil {
         BaseCheck baseCheck = fieldCheck.baseCheck();
 
         if(baseCheck==BaseCheck.Auto){
-            if(Objects.equals(fieldType, String.class)){//字符型
+            if(isString(fieldType)){//字符型
                 baseCheck=BaseCheck.NotBlack;
             }else {
                 baseCheck=BaseCheck.NotNull;
@@ -62,7 +62,7 @@ public class CheckUtil {
                 checkNotNull(value,fieldName);
                 break;
             }case NotBlack:{
-                if(!Objects.equals(fieldType,String.class)){
+                if(!isString(fieldType)){
                     throw new BusinessException("该字段不是String类型,不能进行非空判断",-999);
                 }
                 checkNotBlank((String) value,fieldName);
@@ -77,6 +77,66 @@ public class CheckUtil {
         }
     }
 
+
+
+    private static boolean isString(Class<?> fieldType){
+        return Objects.equals(fieldType,String.class);
+    }
+
+    private static boolean isInteger(Class<?> fieldType){
+        return Objects.equals(fieldType,Integer.class) || Objects.equals(fieldType,int.class);
+    }
+
+    private static boolean isLong(Class<?> fieldType){
+        return Objects.equals(fieldType,Long.class) || Objects.equals(fieldType,long.class);
+    }
+
+
+    private static void checkType(Class<?> fieldType,FieldCheck fieldCheck,Object value){
+        CheckType checkType = fieldCheck.checkType();
+        String fieldName = fieldCheck.value();
+
+        if(checkType==CheckType.Auto){//自动校验的时候才走这样的路
+            BaseCheck baseCheck = fieldCheck.baseCheck();
+            if(baseCheck==BaseCheck.Auto){
+                if(!isString(fieldType)){
+                    checkType=CheckType.NoCheck;
+                }
+                if(isLong(fieldType) || isInteger(fieldType)){
+                    checkType=CheckType.NotNegative;
+                }
+            }
+            if(Objects.equals(fieldType,String.class)){
+                checkType=CheckType.LengthLimit;//无论如何,string都不应该太长
+            }
+        }
+
+
+
+        if(checkType==CheckType.NoCheck){
+            return;
+        }
+        switch (checkType){
+            case NotNegative:{
+                if(isInteger(fieldType)){
+                    checkNotNegative((Integer) value,fieldName);
+                }else if(isLong(fieldType)){
+                    checkNotNegative((Long)value, fieldName);
+                }else {
+                    throw new BusinessException(fieldType.getSimpleName()+"不支持非负判断",-999);
+                }
+                break;
+            }case LengthLimit:{
+                if(!isString(fieldType)){
+                    throw new BusinessException(fieldType.getSimpleName()+"不支持字符串长度判断",-999);
+                }
+                checkStringLength((String) value,fieldName,fieldCheck.maxLength());
+                break;
+            }
+        }
+
+    }
+
     public static void checkTelephone(String telephone){
         if(telephone.length()!=11){
             throw new IllegalArgumentException("电话必须为11位");
@@ -87,35 +147,6 @@ public class CheckUtil {
         if(!matcher.find()){
             throw new IllegalArgumentException("电话格式不合法");
         }
-    }
-
-
-    private static void checkType(Class<?> fieldType,FieldCheck fieldCheck,Object value){
-        CheckType checkType = fieldCheck.checkType();
-        String fieldName = fieldCheck.value();
-
-        if(checkType==CheckType.NoCheck){
-            return;
-        }
-        switch (checkType){
-            case NotNegative:{
-                if(Objects.equals(fieldType,Integer.class) || Objects.equals(fieldType,int.class)){
-                    checkNotNegative((Integer) value,fieldName);
-                }else if(Objects.equals(fieldType,Long.class) || Objects.equals(fieldType,long.class)){
-                    checkNotNegative((Long)value, fieldName);
-                }else {
-                    throw new BusinessException(fieldType.getSimpleName()+"不支持非负判断",-999);
-                }
-                break;
-            }case LengthLimit:{
-                if(!Objects.equals(fieldType,String.class)){
-                    throw new BusinessException(fieldType.getSimpleName()+"不支持字符串长度判断",-999);
-                }
-                checkStringLength((String) value,fieldName,fieldCheck.maxLength());
-                break;
-            }
-        }
-
     }
 
     public static void checkStringLength(String str,String fieldName,Integer maxLength){

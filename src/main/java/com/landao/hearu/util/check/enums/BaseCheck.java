@@ -4,6 +4,10 @@ package com.landao.hearu.util.check.enums;
 public enum BaseCheck {
 
     /**
+     * 根据类型自动判断
+     */
+    Auto,
+    /**
      * 字符串不能为空
      */
     NotBlack,
@@ -15,9 +19,6 @@ public enum BaseCheck {
      * 可以为null
      */
     CanNull,
-    /**
-     * 根据类型自动判断
-     */
-    Auto
+
 
 }

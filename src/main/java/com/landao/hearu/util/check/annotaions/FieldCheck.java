@@ -18,6 +18,6 @@ public @interface FieldCheck {
 
     BaseCheck baseCheck() default BaseCheck.Auto;
 
-    CheckType checkType() default CheckType.NoCheck;
+    CheckType checkType() default CheckType.Auto;
 
 }
