@@ -17,8 +17,8 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface TopicMapper extends BaseMapper<Topic> {
 
-    void pageTopic(IPage<TopicVO> iPage, @Param("topicType") Integer topicType, @Param("userId") Long userId);
+    IPage<TopicVO> pageTopic(IPage<TopicVO> iPage, @Param("topicType") Integer topicType, @Param("userId") Long userId);
 
-    void pageSelfTopic(@Param("iPage") IPage<SelfTopicVO> iPage,@Param("userId") Long userId);
+    IPage<TopicVO> pageSelfTopic(@Param("iPage") IPage<SelfTopicVO> iPage,@Param("userId") Long userId);
 
 }

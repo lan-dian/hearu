@@ -32,12 +32,8 @@
         order by t.update_time desc
     </select>
 
-    <resultMap id="SelfTopicVO" type="com.landao.hearu.model.page.topic.SelfTopicVO" autoMapping="true">
+    <resultMap id="SelfTopicVO" type="com.landao.hearu.model.page.topic.SelfTopicVO">
         <id property="topicId" column="topic_id"/>
-        <association property="author" autoMapping="true" columnPrefix="author_"
-                     javaType="com.landao.hearu.model.page.topic.DetailUserVO">
-            <id property="userId" column="user_id"/>
-        </association>
     </resultMap>
 
     <select id="pageSelfTopic" resultMap="SelfTopicVO">
