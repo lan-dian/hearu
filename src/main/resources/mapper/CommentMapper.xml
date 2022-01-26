@@ -32,4 +32,40 @@
         order by like_count desc, c.update_time desc
     </select>
 
+    <resultMap id="CommentCommentVO" autoMapping="true"
+               type="com.landao.hearu.model.page.comment.CommentCommentVO">
+        <id property="commentId" column="comment_id"/>
+        <association property="author" autoMapping="true" columnPrefix="author_"
+                     javaType="com.landao.hearu.model.page.comment.SimpleUserVO">
+            <id property="userId" column="user_id"/>
+        </association>
+        <association property="response" autoMapping="true" columnPrefix="response_"
+                     javaType="com.landao.hearu.model.page.comment.SimpleUserVO">
+            <id property="userId" column="user_id"/>
+        </association>
+    </resultMap>
+
+
+    <select id="listCommentCommentVO" resultMap="CommentCommentVO">
+        select c.id                                                                                             as comment_id,
+               c.content,
+               c.create_time,
+               c.update_time,
+               c.parent_id,
+               u.id                                                                                             as author_user_id,
+               u.name                                                                                           as author_name,
+               r.id                                                                                             as response_user_id,
+               r.name                                                                                           as response_name,
+               (select count(*) from comment_like cl where cl.comment_id = c.id)                                as like_count,
+               c.user_id = #{userId}                                                                            as mine,
+               (select count(*) from comment_like cl where cl.comment_id = c.id and cl.user_id = #{userId}) =
+               1                                                                                                as `like`
+        from comment c
+                 inner join user u on c.user_id = u.id
+                 left join user r on c.response_id = r.id
+        where c.parent_id = #{parentId}
+        order by like_count desc, create_time
+        limit #{limit}
+    </select>
+
 </mapper>

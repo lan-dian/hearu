@@ -61,6 +61,12 @@ api[0].list[1].list.push({
     url: 'http://localhost:8002/topic/page',
     desc: '分页获取话题',
 });
+api[0].list[1].list.push({
+    order: '7',
+    deprecated: 'false',
+    url: 'http://localhost:8002/topic/comment/page/{topicId}',
+    desc: '分页获取评论',
+});
 api[0].list.push({
     alias: 'UserController',
     order: '3',

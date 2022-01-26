@@ -3,7 +3,10 @@ package com.landao.hearu.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.landao.hearu.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.landao.hearu.model.page.comment.CommentCommentVO;
 import com.landao.hearu.model.page.comment.CommentVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,5 +18,7 @@ import com.landao.hearu.model.page.comment.CommentVO;
  */
 public interface ICommentService extends IService<Comment> {
 
-    IPage<CommentVO> pageComment(IPage<?> iPage);
+    void pageComment(IPage<CommentVO> iPage,Long userId,Long topicId);
+
+    List<CommentCommentVO> listCommentCommentVO(Long commentId, Long userId, Integer limit);
 }

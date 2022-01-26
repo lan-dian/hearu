@@ -1,7 +1,10 @@
 package com.landao.hearu.business;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.landao.hearu.model.page.comment.CommentCommentVO;
 import com.landao.hearu.model.page.comment.CommentVO;
+
+import java.util.List;
 
 public interface CommentService {
 
@@ -9,5 +12,7 @@ public interface CommentService {
 
     boolean commentTopic(String content, Long topicId);
 
-    IPage<CommentVO> pageComment(Integer page, Integer limit);
+    IPage<CommentVO> pageComment(Integer page, Integer limit,Long topicId);
+
+    List<CommentCommentVO> listCommentComments(Long commentId, Integer limit);
 }

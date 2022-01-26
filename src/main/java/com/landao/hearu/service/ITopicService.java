@@ -1,8 +1,8 @@
 package com.landao.hearu.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.landao.hearu.entity.Topic;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.landao.hearu.entity.Topic;
 import com.landao.hearu.model.enums.TopicType;
 import com.landao.hearu.model.page.topic.TopicVO;
 
@@ -16,5 +16,6 @@ import com.landao.hearu.model.page.topic.TopicVO;
  */
 public interface ITopicService extends IService<Topic> {
 
-    IPage<TopicVO> pageTopic(IPage<?> iPage, TopicType topicType, Long userId);
+    void pageTopic(IPage<TopicVO> iPage, TopicType topicType, Long userId);
+
 }

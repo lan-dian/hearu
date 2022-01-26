@@ -6,12 +6,14 @@ import com.landao.hearu.business.CommentService;
 import com.landao.hearu.entity.Comment;
 import com.landao.hearu.entity.Topic;
 import com.landao.hearu.model.exception.BusinessException;
+import com.landao.hearu.model.page.comment.CommentCommentVO;
 import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.service.*;
 import com.landao.hearu.util.TokenUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -48,7 +50,6 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserId(userId);
             comment.setTopicId(parentComment.getTopicId());
             comment.setParentId(parentComment.getId());
-            comment.setResponseId(parentComment.getUserId());
         }else {//在评论中回复了别人
             //得到被回复人的id
             Long parentUserId = parentComment.getUserId();
@@ -77,18 +78,22 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = new Comment();
         comment.setContent(content)
                 .setUserId(TokenUtil.getUserId())
-                .setTopicId(topicId)
-                .setResponseId(topic.getUserId());
+                .setTopicId(topicId);
 
         return iCommentService.save(comment);
     }
 
 
     @Override
-    public IPage<CommentVO> pageComment(Integer page,Integer limit){
+    public IPage<CommentVO> pageComment(Integer page, Integer limit, Long topicId){
         IPage<CommentVO> iPage=new Page<>(page,limit);
-        iCommentService.pageComment(iPage);
+        iCommentService.pageComment(iPage,TokenUtil.getUserId(),topicId);
         return iPage;
+    }
+
+    @Override
+    public List<CommentCommentVO> listCommentComments(Long commentId,Integer limit){
+        return iCommentService.listCommentCommentVO(commentId, TokenUtil.getUserId(), limit);
     }
 
 }

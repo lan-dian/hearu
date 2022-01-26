@@ -7,6 +7,8 @@ import com.landao.hearu.business.TopicService;
 import com.landao.hearu.model.common.CommonResult;
 import com.landao.hearu.model.common.PageDTO;
 import com.landao.hearu.model.enums.TopicType;
+import com.landao.hearu.model.page.comment.CommentCommentVO;
+import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 import com.landao.hearu.safe.annotations.RequiredLogin;
@@ -14,6 +16,7 @@ import com.landao.hearu.util.check.CheckUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 话题相关
@@ -33,8 +36,8 @@ public class TopicController {
      * 发布话题
      */
     @PostMapping("/publish")
-    public CommonResult<Void> publish(@RequestBody TopicInfo topicInfo){
-        CommonResult<Void> result=new CommonResult<>();
+    public CommonResult<Void> publish(@RequestBody TopicInfo topicInfo) {
+        CommonResult<Void> result = new CommonResult<>();
         topicInfo.addCheck();
 
         boolean publish = topicService.publish(topicInfo, TopicType.User);
@@ -46,8 +49,8 @@ public class TopicController {
      * 给话题点赞
      */
     @GetMapping("/like/{topicId}")
-    public CommonResult<Void> likeTopic(@PathVariable Long topicId){
-        CommonResult<Void> result=new CommonResult<>();
+    public CommonResult<Void> likeTopic(@PathVariable Long topicId) {
+        CommonResult<Void> result = new CommonResult<>();
 
         CheckUtil.checkId(topicId);
 
@@ -60,30 +63,31 @@ public class TopicController {
      * 取消对话题的点赞
      */
     @GetMapping("/unlike/{topicId}")
-    public CommonResult<Void> unlikeTopic(@PathVariable Long topicId){
-        CommonResult<Void> result=new CommonResult<>();
+    public CommonResult<Void> unlikeTopic(@PathVariable Long topicId) {
+        CommonResult<Void> result = new CommonResult<>();
 
         CheckUtil.checkId(topicId);
 
         boolean unlikeTopic = topicService.unlikeTopic(topicId);
 
-        return result.ok(unlikeTopic,"你还没有点过赞呢");
+        return result.ok(unlikeTopic, "你还没有点过赞呢");
     }
 
     /**
      * 评论话题
+     *
      * @param topicId 话题id,在url中传递/comment/topic/518
      * @param content 评论内容,通过表单传递,最长为1024
      */
     @PostMapping("/comment/{topicId}")
     public CommonResult<Void> commentTopic(@PathVariable Long topicId,
-                                           @RequestParam String content){
-        CommonResult<Void> result=new CommonResult<>();
+                                           @RequestParam String content) {
+        CommonResult<Void> result = new CommonResult<>();
 
         CheckUtil.checkId(topicId);
 
-        CheckUtil.checkNotBlank(content,"评论内容");
-        CheckUtil.checkStringLength(content,"评论内容",1024);
+        CheckUtil.checkNotBlank(content, "评论内容");
+        CheckUtil.checkStringLength(content, "评论内容", 1024);
 
         boolean comment = commentService.commentTopic(content, topicId);
 
@@ -93,18 +97,19 @@ public class TopicController {
 
     /**
      * 评论的评论
+     *
      * @param commentId 评论的id
-     * @param content 评论的内容
+     * @param content   评论的内容
      */
     @PostMapping("/comment/comment/{commentId}")
     public CommonResult<Void> commentComment(@PathVariable Long commentId,
-                                             @RequestParam String content){
-        CommonResult<Void> result=new CommonResult<>();
+                                             @RequestParam String content) {
+        CommonResult<Void> result = new CommonResult<>();
 
         CheckUtil.checkId(commentId);
 
-        CheckUtil.checkNotBlank(content,"评论内容");
-        CheckUtil.checkStringLength(content,"评论内容",1024);
+        CheckUtil.checkNotBlank(content, "评论内容");
+        CheckUtil.checkStringLength(content, "评论内容", 1024);
 
         boolean commentComment = commentService.commentComment(content, commentId);
 
@@ -116,17 +121,53 @@ public class TopicController {
      */
     @GetMapping("/page")
     public CommonResult<PageDTO<TopicVO>> page(@RequestParam(defaultValue = "1") Integer page,
-                                               @RequestParam(defaultValue = "15") Integer limit){
-        CommonResult<PageDTO<TopicVO>> result=new CommonResult<>();
+                                               @RequestParam(defaultValue = "15") Integer limit) {
+        CommonResult<PageDTO<TopicVO>> result = new CommonResult<>();
 
-        CheckUtil.checkNotNegative(page,"起始页数");
-        CheckUtil.checkNotNegative(limit,"分页条数");
+        CheckUtil.checkNotNegative(page, "起始页数");
+        CheckUtil.checkNotNegative(limit, "分页条数");
 
         IPage<TopicVO> iPage = topicService.pageTopic(page, limit);
 
         return result.body(PageDTO.build(iPage));
     }
 
+    /**
+     * 分页获取评论
+     */
+    @GetMapping("/comment/page/{topicId}")
+    public CommonResult<PageDTO<CommentVO>> commentPage(@RequestParam(defaultValue = "1") Integer page,
+                                                        @RequestParam(defaultValue = "30") Integer limit,
+                                                        @PathVariable Long topicId) {
+        CommonResult<PageDTO<CommentVO>> result = new CommonResult<>();
+
+        CheckUtil.checkNotNegative(page, "起始页数");
+        CheckUtil.checkNotNegative(limit, "分页条数");
+
+        IPage<CommentVO> iPage = commentService.pageComment(page, limit, topicId);
+
+        return result.body(PageDTO.build(iPage));
+    }
+
+    /**
+     * 获取评论的评论
+     * @param limit 可以通过comment的commentCount设置
+     */
+    @GetMapping("/comment/inner/{commentId}")
+    public CommonResult<List<CommentCommentVO>> commentComments(@PathVariable Long commentId,
+                                                                @RequestParam Integer limit){
+        CommonResult<List<CommentCommentVO>> result=new CommonResult<>();
+
+        List<CommentCommentVO> commentCommentVOS = commentService.listCommentComments(commentId, limit);
+
+        return result.body(commentCommentVOS);
+    }
+
+    // /**
+    //  * 点赞评论
+    //  */
+    // @GetMapping("/comment/like/{commentId}")
+    // public CommonResult<Void>
 
 
 }
