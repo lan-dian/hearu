@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.landao.hearu.mapper.CommentMapper">
 
+    <resultMap id="CommentVO" autoMapping="true"
+               type="com.landao.hearu.model.page.comment.CommentVO">
+        <id property="commentId" column="comment_id"/>
+        <association property="author" autoMapping="true" columnPrefix="author_"
+                     javaType="com.landao.hearu.model.page.comment.SimpleUserVO">
+            <id property="userId" column="user_id"/>
+        </association>
+    </resultMap>
+
+    <select id="pageCommentVO" resultMap="CommentVO">
+        select c.id                                                                 comment_id,
+               c.content,
+               c.topic_id,
+               c.create_time,
+               c.update_time,
+               cu.id                                                             as author_user_id,
+               name                                                              as author_name,
+               avatar                                                            as author_avatar,
+               (select count(*) from comment_like cl where cl.comment_id = c.id) as like_count,
+               (select count(*) from comment cc where cc.parent_id = c.id)       as comment_count,
+               c.user_id = #{userId}                                             as mine,
+               (select count(*) from comment_like cl where cl.comment_id = c.id and cl.user_id = #{userId}) =
+               1                                                                 as `like`
+        from comment c
+                 inner join user cu on c.user_id = cu.id
+        where c.topic_id = #{topicId}
+          and c.parent_id is null
+        order by like_count desc, c.update_time desc
+    </select>
+
 </mapper>

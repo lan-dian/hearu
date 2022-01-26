@@ -21,7 +21,7 @@ public class UnAuthorizationException extends RuntimeException{
     }
 
     public String getDescription(){
-        return "你至少拥有"+Arrays.toString(requiredRole)+"其中的一个角色才可以访问";
+        return "你得至少拥有"+Arrays.toString(requiredRole)+"其中的一个角色才可以访问";
     }
 
 }

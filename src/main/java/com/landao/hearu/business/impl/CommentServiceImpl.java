@@ -1,10 +1,12 @@
 package com.landao.hearu.business.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.landao.hearu.business.CommentService;
 import com.landao.hearu.entity.Comment;
 import com.landao.hearu.entity.Topic;
-import com.landao.hearu.entity.User;
 import com.landao.hearu.model.exception.BusinessException;
+import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.service.*;
 import com.landao.hearu.util.TokenUtil;
 import org.springframework.stereotype.Service;
@@ -46,15 +48,10 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserId(userId);
             comment.setTopicId(parentComment.getTopicId());
             comment.setParentId(parentComment.getId());
+            comment.setResponseId(parentComment.getUserId());
         }else {//在评论中回复了别人
             //得到被回复人的id
             Long parentUserId = parentComment.getUserId();
-            User user = iUserService.lambdaQuery()
-                    .eq(User::getId, parentUserId).one();
-            String userName = user.getName();
-
-            content="回复 @"+userName+":"+content;//回复别人
-
             //寻找顶层的父id,方便设置成嵌套结构
             Comment topComment = iCommentService.lambdaQuery()
                     .eq(Comment::getId, parentComment.getParentId()).one();
@@ -64,6 +61,7 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserId(userId);
             comment.setTopicId(parentComment.getTopicId());
             comment.setParentId(topComment.getId());
+            comment.setResponseId(parentUserId);
         }
 
         return iCommentService.save(comment);
@@ -79,9 +77,18 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = new Comment();
         comment.setContent(content)
                 .setUserId(TokenUtil.getUserId())
-                .setTopicId(topicId);
+                .setTopicId(topicId)
+                .setResponseId(topic.getUserId());
 
         return iCommentService.save(comment);
+    }
+
+
+    @Override
+    public IPage<CommentVO> pageComment(Integer page,Integer limit){
+        IPage<CommentVO> iPage=new Page<>(page,limit);
+        iCommentService.pageComment(iPage);
+        return iPage;
     }
 
 }

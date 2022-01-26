@@ -1,10 +1,13 @@
 package com.landao.hearu.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.landao.hearu.business.CommentService;
 import com.landao.hearu.business.TopicService;
 import com.landao.hearu.model.common.CommonResult;
+import com.landao.hearu.model.common.PageDTO;
 import com.landao.hearu.model.enums.TopicType;
+import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 import com.landao.hearu.safe.annotations.RequiredLogin;
 import com.landao.hearu.util.check.CheckUtil;
@@ -42,7 +45,7 @@ public class TopicController {
     /**
      * 给话题点赞
      */
-    @GetMapping("/like/topic/{topicId}")
+    @GetMapping("/like/{topicId}")
     public CommonResult<Void> likeTopic(@PathVariable Long topicId){
         CommonResult<Void> result=new CommonResult<>();
 
@@ -56,7 +59,7 @@ public class TopicController {
     /**
      * 取消对话题的点赞
      */
-    @GetMapping("/unlike/topic/{topicId}")
+    @GetMapping("/unlike/{topicId}")
     public CommonResult<Void> unlikeTopic(@PathVariable Long topicId){
         CommonResult<Void> result=new CommonResult<>();
 
@@ -72,7 +75,7 @@ public class TopicController {
      * @param topicId 话题id,在url中传递/comment/topic/518
      * @param content 评论内容,通过表单传递,最长为1024
      */
-    @PostMapping("/comment/topic/{topicId}")
+    @PostMapping("/comment/{topicId}")
     public CommonResult<Void> commentTopic(@PathVariable Long topicId,
                                            @RequestParam String content){
         CommonResult<Void> result=new CommonResult<>();
@@ -106,6 +109,22 @@ public class TopicController {
         boolean commentComment = commentService.commentComment(content, commentId);
 
         return result.ok(commentComment);
+    }
+
+    /**
+     * 分页获取话题
+     */
+    @GetMapping("/page")
+    public CommonResult<PageDTO<TopicVO>> page(@RequestParam(defaultValue = "1") Integer page,
+                                               @RequestParam(defaultValue = "15") Integer limit){
+        CommonResult<PageDTO<TopicVO>> result=new CommonResult<>();
+
+        CheckUtil.checkNotNegative(page,"起始页数");
+        CheckUtil.checkNotNegative(limit,"分页条数");
+
+        IPage<TopicVO> iPage = topicService.pageTopic(page, limit);
+
+        return result.body(PageDTO.build(iPage));
     }
 
 

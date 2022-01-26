@@ -1,10 +1,13 @@
 package com.landao.hearu.business.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.landao.hearu.business.TopicService;
 import com.landao.hearu.entity.Topic;
 import com.landao.hearu.entity.TopicLike;
 import com.landao.hearu.model.enums.TopicType;
 import com.landao.hearu.model.exception.BusinessException;
+import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 import com.landao.hearu.service.*;
 import com.landao.hearu.util.TokenUtil;
@@ -29,6 +32,15 @@ public class TopicServiceImpl implements TopicService {
 
     @Resource
     IUserService iUserService;
+
+    @Override
+    public IPage<TopicVO> pageTopic(Integer page, Integer limit){
+        IPage<TopicVO> iPage=new Page<>(page,limit);
+
+        iTopicService.pageTopic(iPage,TopicType.User,TokenUtil.getUserId());
+
+        return iPage;
+    }
 
     @Override
     public boolean unlikeTopic(Long topicId){

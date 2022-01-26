@@ -1,7 +1,10 @@
 package com.landao.hearu.mapper;
 
-import com.landao.hearu.entity.Topic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.landao.hearu.entity.Topic;
+import com.landao.hearu.model.page.topic.TopicVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2022-01-24
  */
 public interface TopicMapper extends BaseMapper<Topic> {
+
+    IPage<TopicVO> pageTopic(IPage<?> iPage, @Param("topicType") Integer topicType, @Param("userId") Long userId);
 
 }

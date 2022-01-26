@@ -1,7 +1,9 @@
 package com.landao.hearu.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.landao.hearu.entity.Comment;
 import com.landao.hearu.mapper.CommentMapper;
+import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -16,5 +18,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ICommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
+
+    @Override
+    public IPage<CommentVO> pageComment(IPage<?> iPage){
+        this.baseMapper.pageCommentVO(IPage)
+    }
 
 }

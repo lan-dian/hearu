@@ -12,30 +12,91 @@ api[0].list.push({
     desc: '公共访问接口',
     list: []
 })
+api[0].list[0].list.push({
+    order: '1',
+    deprecated: 'false',
+    url: 'http://localhost:8002/api/upload',
+    desc: '文件上传',
+});
 api[0].list.push({
-    alias: 'UserController',
+    alias: 'TopicController',
     order: '2',
-    link: '用户相关',
-    desc: '用户相关',
+    link: '话题相关',
+    desc: '话题相关',
     list: []
 })
 api[0].list[1].list.push({
     order: '1',
     deprecated: 'false',
+    url: 'http://localhost:8002/topic/publish',
+    desc: '发布话题',
+});
+api[0].list[1].list.push({
+    order: '2',
+    deprecated: 'false',
+    url: 'http://localhost:8002/topic/like/{topicId}',
+    desc: '给话题点赞',
+});
+api[0].list[1].list.push({
+    order: '3',
+    deprecated: 'false',
+    url: 'http://localhost:8002/topic/unlike/{topicId}',
+    desc: '取消对话题的点赞',
+});
+api[0].list[1].list.push({
+    order: '4',
+    deprecated: 'false',
+    url: 'http://localhost:8002/topic/comment/{topicId}',
+    desc: '评论话题',
+});
+api[0].list[1].list.push({
+    order: '5',
+    deprecated: 'false',
+    url: 'http://localhost:8002/topic/comment/comment/{commentId}',
+    desc: '评论的评论',
+});
+api[0].list[1].list.push({
+    order: '6',
+    deprecated: 'false',
+    url: 'http://localhost:8002/topic/page',
+    desc: '分页获取话题',
+});
+api[0].list.push({
+    alias: 'UserController',
+    order: '3',
+    link: '用户相关',
+    desc: '用户相关',
+    list: []
+})
+api[0].list[2].list.push({
+    order: '1',
+    deprecated: 'false',
     url: 'http://localhost:8002/user/info',
     desc: '获取用户基本信息',
 });
-api[0].list[1].list.push({
+api[0].list[2].list.push({
     order: '2',
     deprecated: 'false',
     url: 'http://localhost:8002/user/login',
     desc: '用户登陆',
 });
-api[0].list[1].list.push({
+api[0].list[2].list.push({
     order: '3',
     deprecated: 'false',
     url: 'http://localhost:8002/user/register',
     desc: '用户注册',
+});
+api[0].list[2].list.push({
+    order: '4',
+    deprecated: 'false',
+    url: 'http://localhost:8002/user/change/info',
+    desc: '修改个人信息',
+});
+api[0].list[2].list.push({
+    order: '5',
+    deprecated: 'false',
+    url: 'http://localhost:8002/user/change/password',
+    desc: '修改密码',
 });
 document.onkeydown = keyDownSearch;
 function keyDownSearch(e) {
