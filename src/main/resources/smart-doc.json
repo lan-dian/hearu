@@ -1,5 +1,5 @@
 {
-  "serverUrl": "http://{{host}}:{{port}}",
+  "serverUrl": "http://110.40.157.12:8002",
   "outPath": "src/main/resources/static/doc",
   "isStrict": false,
   "allInOne": true,
