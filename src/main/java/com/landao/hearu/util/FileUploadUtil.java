@@ -42,7 +42,7 @@ public class FileUploadUtil {
         }
 
 
-        return "/res/hearu/" + now + "/" + fileName;
+        return "/hearu/" + now + "/" + fileName;
 
     }
 

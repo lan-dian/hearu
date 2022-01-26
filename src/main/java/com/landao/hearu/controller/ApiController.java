@@ -21,8 +21,8 @@ public class ApiController {
      * 文件上传
      * @param file 文件
      * @return 文件上传成功会返回文件地址字符串在data
-     * 返回示例/res/hearu/2022-1-25/uuid.jpg
-     * 需要前端拼接服务器ip和端口
+     * 返回示例/hearu/2022-1-25/uuid.jpg
+     * 文件服务器 http://110.40.157.12:8003/
      */
     @RequiredLogin
     @PostMapping("/upload")
