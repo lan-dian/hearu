@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface CommentService {
 
+    boolean likeComment(Long userId, Long commentId);
+
+    boolean unLikeComment(Long userId, Long commentId);
+
     boolean commentComment(String content, Long commentId);
 
     boolean commentTopic(String content, Long topicId);
@@ -15,4 +19,6 @@ public interface CommentService {
     IPage<CommentVO> pageComment(Integer page, Integer limit,Long topicId);
 
     List<CommentCommentVO> listCommentComments(Long commentId, Integer limit);
+
+
 }

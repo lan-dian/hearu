@@ -32,4 +32,26 @@
         order by t.update_time desc
     </select>
 
+    <resultMap id="SelfTopicVO" type="com.landao.hearu.model.page.topic.SelfTopicVO" autoMapping="true">
+        <id property="topicId" column="topic_id"/>
+        <association property="author" autoMapping="true" columnPrefix="author_"
+                     javaType="com.landao.hearu.model.page.topic.DetailUserVO">
+            <id property="userId" column="user_id"/>
+        </association>
+    </resultMap>
+
+    <select id="pageSelfTopic" resultMap="SelfTopicVO">
+        select t.id as topic_id,
+               t.title,
+               t.content,
+               t.create_time,
+               t.update_time,
+               (select count(*) from comment c where c.topic_id=t.id) as comment_count,
+               (select count(*) from topic_like tl where tl.topic_id=t.id)as like_count,
+               (select count(*) from topic_like tl where tl.topic_id=t.id and tl.user_id=#{userId})=#{userId} as `like`
+        from topic t
+        where t.type=0 and t.user_id=#{userId}
+        order by t.update_time desc
+    </select>
+
 </mapper>

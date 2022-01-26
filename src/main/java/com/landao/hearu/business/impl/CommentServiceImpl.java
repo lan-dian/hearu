@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.landao.hearu.business.CommentService;
 import com.landao.hearu.entity.Comment;
+import com.landao.hearu.entity.CommentLike;
 import com.landao.hearu.entity.Topic;
 import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.page.comment.CommentCommentVO;
@@ -32,6 +33,36 @@ public class CommentServiceImpl implements CommentService {
 
     @Resource
     IUserService iUserService;
+
+    @Override
+    public boolean likeComment(Long userId, Long commentId){
+        CommentLike old = iCommentLikeService.lambdaQuery()
+                .eq(CommentLike::getUserId, userId)
+                .eq(CommentLike::getCommentId, commentId)
+                .one();
+        if(old!=null){
+            throw new BusinessException("你已经赞过了");
+        }
+
+        Integer count = iCommentService.lambdaQuery().eq(Comment::getId, commentId).count();
+        if(count==0){
+            throw new BusinessException("评论不存在");
+        }
+
+        CommentLike commentLike = new CommentLike();
+        commentLike.setCommentId(commentId);
+        commentLike.setUserId(userId);
+
+        return iCommentLikeService.save(commentLike);
+    }
+
+    @Override
+    public boolean unLikeComment(Long userId,Long commentId){
+        return iCommentLikeService.lambdaUpdate()
+                .eq(CommentLike::getUserId, userId)
+                .eq(CommentLike::getCommentId, commentId)
+                .remove();
+    }
 
     @Override
     public boolean commentComment(String content, Long commentId){
@@ -92,7 +123,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentCommentVO> listCommentComments(Long commentId,Integer limit){
+    public List<CommentCommentVO> listCommentComments(Long commentId, Integer limit){
         return iCommentService.listCommentCommentVO(commentId, TokenUtil.getUserId(), limit);
     }
 

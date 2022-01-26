@@ -2,6 +2,7 @@ package com.landao.hearu.business;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.landao.hearu.model.enums.TopicType;
+import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 
@@ -14,5 +15,7 @@ public interface TopicService {
     boolean likeTopic(Long topicId);
 
     boolean publish(TopicInfo topicInfo, TopicType topicType);
+
+    IPage<SelfTopicVO> pageSelfTopicVO(Integer page, Integer limit, Long userId);
 
 }

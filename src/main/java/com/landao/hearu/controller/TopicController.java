@@ -9,9 +9,11 @@ import com.landao.hearu.model.common.PageDTO;
 import com.landao.hearu.model.enums.TopicType;
 import com.landao.hearu.model.page.comment.CommentCommentVO;
 import com.landao.hearu.model.page.comment.CommentVO;
+import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 import com.landao.hearu.safe.annotations.RequiredLogin;
+import com.landao.hearu.util.TokenUtil;
 import com.landao.hearu.util.check.CheckUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -163,11 +165,45 @@ public class TopicController {
         return result.body(commentCommentVOS);
     }
 
-    // /**
-    //  * 点赞评论
-    //  */
-    // @GetMapping("/comment/like/{commentId}")
-    // public CommonResult<Void>
+    /**
+     * 点赞评论
+     */
+    @GetMapping("/comment/like/{commentId}")
+    public CommonResult<Void> likeComment(@PathVariable Long commentId){
+        CommonResult<Void> result=new CommonResult<>();
+
+        boolean like = commentService.likeComment(TokenUtil.getUserId(), commentId);
+
+        return result.ok(like);
+    }
+
+    /**
+     * 取消点赞评论
+     */
+    @GetMapping("/comment/unlike/{commentId}")
+    public CommonResult<Void> unlikeComment(@PathVariable Long commentId){
+        CommonResult<Void> result=new CommonResult<>();
+
+        boolean like = commentService.unLikeComment(TokenUtil.getUserId(), commentId);
+
+        return result.ok(like,"你还没有点过赞呢");
+    }
+
+    /**
+     * 获取我发布过的话题
+     */
+    @GetMapping("/mine")
+    public CommonResult<PageDTO<SelfTopicVO>> mineTopic(@RequestParam(defaultValue = "1") Integer page,
+                                                        @RequestParam(defaultValue = "15") Integer limit){
+        CommonResult<PageDTO<SelfTopicVO>> result=new CommonResult<>();
+
+        CheckUtil.checkNotNegative(page, "起始页数");
+        CheckUtil.checkNotNegative(limit, "分页条数");
+
+        IPage<SelfTopicVO> iPage = topicService.pageSelfTopicVO(page, limit, TokenUtil.getUserId());
+
+        return result.body(PageDTO.build(iPage));
+    }
 
 
 }

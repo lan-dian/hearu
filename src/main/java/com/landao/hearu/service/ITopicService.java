@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.landao.hearu.entity.Topic;
 import com.landao.hearu.model.enums.TopicType;
+import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 
 /**
@@ -18,4 +19,5 @@ public interface ITopicService extends IService<Topic> {
 
     void pageTopic(IPage<TopicVO> iPage, TopicType topicType, Long userId);
 
+    void pageSelfTopic(IPage<SelfTopicVO> iPage, Long userId);
 }

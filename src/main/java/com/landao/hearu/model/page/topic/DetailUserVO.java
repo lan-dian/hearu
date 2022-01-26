@@ -1,5 +1,6 @@
 package com.landao.hearu.model.page.topic;
 
+import com.landao.hearu.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ public class DetailUserVO {
     /**
      * 用户id
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 用户名
@@ -39,6 +40,18 @@ public class DetailUserVO {
      * 个性签名
      */
     private String signature;
+
+
+    public static DetailUserVO convert(User user){
+        DetailUserVO detailUserVO = new DetailUserVO();
+        detailUserVO.setUserId(user.getId());
+        detailUserVO.setName(user.getName());
+        detailUserVO.setTelephone(user.getTelephone());
+        detailUserVO.setSex(user.getSex());
+        detailUserVO.setAvatar(user.getAvatar());
+        detailUserVO.setSignature(user.getSignature());
+        return detailUserVO;
+    }
 
 
 }

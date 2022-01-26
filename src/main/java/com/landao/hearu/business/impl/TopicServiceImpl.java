@@ -7,6 +7,7 @@ import com.landao.hearu.entity.Topic;
 import com.landao.hearu.entity.TopicLike;
 import com.landao.hearu.model.enums.TopicType;
 import com.landao.hearu.model.exception.BusinessException;
+import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 import com.landao.hearu.service.*;
@@ -81,6 +82,15 @@ public class TopicServiceImpl implements TopicService {
     public boolean publish(TopicInfo topicInfo, TopicType topicType) {
         Topic topic = Topic.convert(topicInfo, topicType);
         return iTopicService.save(topic);
+    }
+
+    @Override
+    public IPage<SelfTopicVO> pageSelfTopicVO(Integer page, Integer limit, Long userId){
+        IPage<SelfTopicVO> iPage=new Page<>(page,limit);
+
+        iTopicService.pageSelfTopic(iPage,userId);
+
+        return iPage;
     }
 
 
