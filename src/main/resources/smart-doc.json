@@ -14,7 +14,6 @@
     "desc": "Bearer token",
     "value":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoi5bi454-C5rSBIn0.qm1OxMY28uZ38cHY3hE0-r4fUZhCER51sFySVc06PHw",
     "required": true,
-    "pathPatterns": "/**",
-    "excludePathPatterns":"/api/**"
+    "pathPatterns": "/**"
   }]
 }
