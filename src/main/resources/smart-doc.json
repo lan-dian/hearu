@@ -1,5 +1,5 @@
 {
-  "serverUrl": "http://localhost:8002",
+  "serverUrl": "http://{{host}}:{{port}}",
   "outPath": "src/main/resources/static/doc",
   "isStrict": false,
   "allInOne": true,
