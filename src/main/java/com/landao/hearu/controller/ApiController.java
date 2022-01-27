@@ -3,11 +3,10 @@ package com.landao.hearu.controller;
 import com.landao.hearu.model.common.CommonResult;
 import com.landao.hearu.safe.annotations.RequiredLogin;
 import com.landao.hearu.util.FileUploadUtil;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Properties;
 
 /**
  * 公共访问接口
@@ -36,6 +35,11 @@ public class ApiController {
         String resAddress = FileUploadUtil.uploadFile(file);
 
         return result.body(resAddress);
+    }
+
+    @GetMapping("/test")
+    void test(){
+        Properties properties = System.getProperties();
     }
 
 }
