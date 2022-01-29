@@ -10,11 +10,11 @@
     </parent>
     <groupId>com.landao</groupId>
     <artifactId>hearu</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>hearu</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
+        <spring-boot-admin.version>2.6.2</spring-boot-admin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -70,6 +70,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -84,6 +96,7 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -96,40 +109,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>static/**</include>
-                    <include>application.yml</include>
-                    <include>application-${package.environment}.yml</include>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-        </resources>
 
     </build>
-
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <package.environment>dev</package.environment>
-            </properties>
-            <!-- 是否默认 true表示默认-->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-
-        <profile>
-            <!-- 生产环境 -->
-            <id>prod</id>
-            <properties>
-                <package.environment>prod</package.environment>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>

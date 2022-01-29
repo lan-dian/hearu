@@ -6,8 +6,6 @@ import com.landao.hearu.util.FileUploadUtil;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Properties;
-
 /**
  * 公共访问接口
  */
@@ -35,11 +33,6 @@ public class ApiController {
         String resAddress = FileUploadUtil.uploadFile(file);
 
         return result.body(resAddress);
-    }
-
-    @GetMapping("/test")
-    void test(){
-        Properties properties = System.getProperties();
     }
 
 }

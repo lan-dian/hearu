@@ -1,3 +1,9 @@
 spring:
   profiles:
-    active: @package.environment@
+    active: "dev-x"
+    group:
+      "dev-x": 'dev,common'
+      "prod-x": 'prod,common'
+
+
+
