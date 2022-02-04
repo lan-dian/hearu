@@ -12,13 +12,14 @@ public interface CommentService {
 
     boolean unLikeComment(Long userId, Long commentId);
 
-    boolean commentComment(String content, Long commentId);
+    boolean commentComment(String content, Long commentId, Long userId);
 
-    boolean commentTopic(String content, Long topicId);
-
-    IPage<CommentVO> pageComment(Integer page, Integer limit,Long topicId);
-
-    List<CommentCommentVO> listCommentComments(Long commentId, Integer limit);
+    boolean commentTopic(String content, Long topicId, Long userId);
 
 
+    IPage<CommentVO> pageComment(Integer page, Integer limit, Long topicId, Long userId);
+
+
+
+    List<CommentCommentVO> listCommentComments(Long commentId, Integer limit, Long userId);
 }

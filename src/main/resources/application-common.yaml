@@ -10,3 +10,6 @@ spring:
     name: hearu
 
 
+guardian:
+  token:
+    private-key: 'newxnbnewxyyds666'

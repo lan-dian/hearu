@@ -1,10 +1,11 @@
 package com.landao.hearu.controller;
 
+import com.landao.guardian.annotations.author.RequiredLogin;
 import com.landao.hearu.model.common.CommonResult;
-import com.landao.hearu.safe.annotations.RequiredLogin;
 import com.landao.hearu.util.FileUploadUtil;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 /**
  * 公共访问接口

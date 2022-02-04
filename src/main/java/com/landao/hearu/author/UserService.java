@@ -1,6 +1,7 @@
-package com.landao.hearu.business.impl;
+package com.landao.hearu.author;
 
-import com.landao.hearu.business.UserService;
+import com.landao.guardian.annotations.system.GuardianService;
+import com.landao.guardian.core.TokenService;
 import com.landao.hearu.entity.User;
 import com.landao.hearu.entity.UserRole;
 import com.landao.hearu.model.enums.RoleEnum;
@@ -11,14 +12,13 @@ import com.landao.hearu.model.user.UserInfoVO;
 import com.landao.hearu.service.IUserRoleService;
 import com.landao.hearu.service.IUserService;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@Service
-public class UserServiceImpl implements UserService {
+@GuardianService
+public class UserService extends TokenService<UserTokenBean,Long> {
 
     @Resource
     IUserService iUserService;
@@ -26,11 +26,15 @@ public class UserServiceImpl implements UserService {
     @Resource
     IUserRoleService iUserRoleService;
 
-
     @Override
-    public boolean changePassword(Long userId, String oldPassword, String newPassword){
+    public Set<String> getRoles() {
+        return iUserRoleService.getRoles(getUserId()).stream().map(Enum::name).collect(Collectors.toSet());
+    }
+
+
+    public boolean changePassword(String oldPassword, String newPassword){
         Integer count = iUserService.lambdaQuery()
-                .eq(User::getId, userId)
+                .eq(User::getId, getUserId())
                 .eq(User::getPassword, oldPassword)
                 .count();
         if(count==0){
@@ -39,24 +43,20 @@ public class UserServiceImpl implements UserService {
 
         return iUserService.lambdaUpdate()
                 .set(User::getPassword, newPassword)
-                .eq(User::getId, userId)
+                .eq(User::getId, getUserId())
                 .update();
     }
 
-    @Override
     public boolean changeUserInfo(UserInfo userInfo) {
         User user = User.convert(userInfo);
         return iUserService.updateById(user);
     }
 
-
-    @Override
     public UserInfoVO getUserInfo(Long userId){
         User user = iUserService.getById(userId);
         return UserInfoVO.convert(user);
     }
 
-    @Override
     public LoginVO login(String telephone, String password){
         //查询用户
         User user = iUserService.lambdaQuery()
@@ -69,12 +69,15 @@ public class UserServiceImpl implements UserService {
         //获取角色列表
         Set<RoleEnum> roles = iUserRoleService.getRoles(user.getId());
 
-        return new LoginVO(user,roles);
+        UserTokenBean userTokenBean=UserTokenBean.convert(user);
+
+        String token = parseToken(userTokenBean);
+
+        return new LoginVO(token,user.getName(),roles);
     }
 
 
-    @Override
-    @Transactional(rollbackFor = Throwable.class)
+    // @Transactional(rollbackFor = Throwable.class)
     public boolean registerUser(UserInfo userInfo,RoleEnum roleEnum){
         User user = User.convert(userInfo);
 
@@ -99,8 +102,6 @@ public class UserServiceImpl implements UserService {
         }
 
     }
-
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.landao.hearu.model.common;
 
-import com.landao.hearu.util.TokenUtil;
+import com.landao.guardian.core.context.GuardianContext;
+import com.landao.hearu.author.UserTokenBean;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -55,9 +56,9 @@ public class LogDTO {
 
 
     public void setUserInfo(){
-        if(TokenUtil.isLogin()){
-            userId=TokenUtil.getUserId();
-            name=TokenUtil.getUserName();
+        if(GuardianContext.isLogin()){
+            userId=GuardianContext.getUserId(Long.class);
+            name=GuardianContext.getUser(UserTokenBean.class).getName();
         }
     }
 

@@ -10,7 +10,6 @@ import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.page.comment.CommentCommentVO;
 import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.service.*;
-import com.landao.hearu.util.TokenUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -65,13 +64,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public boolean commentComment(String content, Long commentId){
+    public boolean commentComment(String content, Long commentId,Long userId){
         //判断评论是否存在
         Comment parentComment = iCommentService.lambdaQuery().eq(Comment::getId, commentId).one();
         if(parentComment==null){
             throw new BusinessException("评论不存在");
         }
-        Long userId = TokenUtil.getUserId();
         //如果是直接评论评论
         Comment comment=null;
 
@@ -100,7 +98,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public boolean commentTopic(String content, Long topicId) {
+    public boolean commentTopic(String content, Long topicId,Long userId) {
         Topic topic = iTopicService.lambdaQuery().eq(Topic::getId, topicId).one();
         if (topic == null) {
             throw new BusinessException("话题不存在");
@@ -108,7 +106,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = new Comment();
         comment.setContent(content)
-                .setUserId(TokenUtil.getUserId())
+                .setUserId(userId)
                 .setTopicId(topicId);
 
         return iCommentService.save(comment);
@@ -116,15 +114,15 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public IPage<CommentVO> pageComment(Integer page, Integer limit, Long topicId){
+    public IPage<CommentVO> pageComment(Integer page, Integer limit, Long topicId,Long userId){
         IPage<CommentVO> iPage=new Page<>(page,limit);
-        iCommentService.pageComment(iPage,TokenUtil.getUserId(),topicId);
+        iCommentService.pageComment(iPage,userId,topicId);
         return iPage;
     }
 
     @Override
-    public List<CommentCommentVO> listCommentComments(Long commentId, Integer limit){
-        return iCommentService.listCommentCommentVO(commentId, TokenUtil.getUserId(), limit);
+    public List<CommentCommentVO> listCommentComments(Long commentId, Integer limit,Long userId){
+        return iCommentService.listCommentCommentVO(commentId, userId, limit);
     }
 
 }

@@ -1,8 +1,7 @@
 package com.landao.hearu.model.user;
 
-import com.landao.hearu.entity.User;
 import com.landao.hearu.model.enums.RoleEnum;
-import com.landao.hearu.util.TokenUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +12,7 @@ import java.util.Set;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class LoginVO {
 
     /**
@@ -31,10 +31,7 @@ public class LoginVO {
     private Set<RoleEnum> roles;
 
 
-    public LoginVO(User user,Set<RoleEnum> roles){
-        this.token=TokenUtil.getToken(user.getId(),user.getName());
-        this.name=user.getName();
-        this.roles=roles;
-    }
+
+
 
 }

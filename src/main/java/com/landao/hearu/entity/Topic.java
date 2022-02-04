@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.landao.hearu.model.enums.TopicType;
 import com.landao.hearu.model.topic.TopicInfo;
-import com.landao.hearu.util.TokenUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -64,12 +63,12 @@ public class Topic implements Serializable {
      */
     private TopicType type;
 
-    public static Topic convert(TopicInfo topicInfo,TopicType topicType){
+    public static Topic convert(TopicInfo topicInfo,TopicType topicType,Long userId){
         Topic topic = new Topic();
         topic.setId(topicInfo.getId());
         topic.setTitle(topicInfo.getTitle());
         topic.setContent(topicInfo.getContent());
-        topic.setUserId(TokenUtil.getUserId());
+        topic.setUserId(userId);
         topic.setType(topicType);
         return topic;
 

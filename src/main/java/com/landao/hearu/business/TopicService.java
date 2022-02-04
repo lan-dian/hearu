@@ -8,13 +8,13 @@ import com.landao.hearu.model.topic.TopicInfo;
 
 public interface TopicService {
 
-    IPage<TopicVO> pageTopic(Integer page, Integer limit);
+    IPage<TopicVO> pageTopic(Integer page, Integer limit, Long userId);
 
-    boolean unlikeTopic(Long topicId);
+    boolean unlikeTopic(Long topicId, Long userId);
 
-    boolean likeTopic(Long topicId);
+    boolean likeTopic(Long topicId, Long userId);
 
-    boolean publish(TopicInfo topicInfo, TopicType topicType);
+    boolean publish(TopicInfo topicInfo, TopicType topicType, Long userId);
 
     IPage<SelfTopicVO> pageSelfTopicVO(Integer page, Integer limit, Long userId);
 

@@ -1,13 +1,16 @@
 package com.landao.hearu.model.user;
 
 
-import com.landao.hearu.model.common.BaseCheckInfo;
-import com.landao.hearu.util.check.CheckUtil;
-import com.landao.hearu.util.check.annotaions.FieldCheck;
-import com.landao.hearu.util.check.enums.BaseCheck;
+import com.landao.inspector.annotations.InspectField;
+import com.landao.inspector.annotations.special.TelePhone;
+import com.landao.inspector.annotations.special.group.AddGroup;
+import com.landao.inspector.annotations.special.group.Id;
+import com.landao.inspector.annotations.special.group.UpdateGroup;
+import com.landao.inspector.model.Inspect;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -18,73 +21,69 @@ import java.util.Objects;
  */
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserInfo extends BaseCheckInfo {
+public class UserInfo implements Inspect {
+
+    @Id
+    private Long id;
 
     /**
      * 用户名
      * @apiNote 最大长度32
      */
-    @FieldCheck(value = "用户名",maxLength = 32)
+    @InspectField(value = "用户名",max = 32)
     private String name;
+
 
     /**
      * 电话
-     * @apiNote 长度必须为11
-     * 用电话登陆
      */
+    @TelePhone
+    @InspectField(value = "电话")
     private String telephone;
 
     /**
-     * 密码
-     * @apiNote md5加密后传递
+     * 性别
      */
-    @FieldCheck(value = "密码",maxLength = 32)
     private String password;
 
     /**
      * 性别
-     * @apiNote 必须为男或女
      */
-    @FieldCheck(value = "性别",maxLength = 1)
     private String sex;
+
 
     /**
      * 头像
-     * @apiNote 可以为空
      */
-    @FieldCheck(value = "头像",maxLength = 128,baseCheck = BaseCheck.CanNull)
+    @Nullable
+    @InspectField(value = "头像",max = 128)
     private String avatar;
+
 
     /**
      * 个性签名
-     * @apiNote 可以为空
      */
-    @FieldCheck(value = "个性签名",maxLength =64,baseCheck = BaseCheck.CanNull)
+    @Nullable
+    @InspectField(value = "个性签名",max =64)
     private String signature;
 
-    /**
-     * 生日
-     */
-    @FieldCheck(value = "生日")
+
     private LocalDate birth;
 
-    @Override
-    public void updateCheck() {
-        super.updateCheck();
-        this.telephone=null;
-        this.password=null;
-    }
+
 
     @Override
-    protected void commonCheck() {
-        super.commonCheck();
-        CheckUtil.checkNotBlank(telephone,"电话");
-        CheckUtil.checkTelephone(telephone);
-        if(password.length()!=32){
-            throw new IllegalArgumentException("密码请用md5加密");
+    public void inspect(Class<?> group) {
+        if(UpdateGroup.class.equals(group)){
+            telephone=null;
+            password=null;
+        }else if(AddGroup.class.equals(group)){
+            if(!StringUtils.hasText(password)){
+
+            }
+            password=password.toLowerCase(Locale.ROOT);//转化成小写
         }
-        password=password.toLowerCase(Locale.ROOT);//装换成小写
+
         if(!(Objects.equals(sex,"女") || Objects.equals(sex,"男"))){
             throw new IllegalArgumentException("性别必须为男或女");
         }
@@ -92,4 +91,6 @@ public class UserInfo extends BaseCheckInfo {
             throw new IllegalArgumentException("出生日期不能晚于现在");
         }
     }
+
+
 }

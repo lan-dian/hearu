@@ -1,26 +1,27 @@
 package com.landao.hearu.model.topic;
 
-import com.landao.hearu.model.common.BaseCheckInfo;
-import com.landao.hearu.util.check.annotaions.FieldCheck;
+import com.landao.inspector.annotations.InspectField;
+import com.landao.inspector.annotations.special.group.Id;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class TopicInfo extends BaseCheckInfo {
+public class TopicInfo{
+
+    @Id
+    private Long id;
 
     /**
      * 标题
      */
-    @FieldCheck(value = "标题",maxLength = 128)
+    @InspectField(value = "标题",max= 128)
     private String title;
 
     /**
      * 内容
      */
-    @FieldCheck(value = "内容",maxLength = 50000)
+    @InspectField(value = "内容",max = 50000)
     private String content;
 
 

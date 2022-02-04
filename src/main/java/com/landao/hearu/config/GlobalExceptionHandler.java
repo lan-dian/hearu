@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
      * 权限不足
      */
     @ExceptionHandler(UnAuthorizationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public CommonResult<String> unAuthorizationHandler(UnAuthorizationException e){
         CommonResult<String> result=new CommonResult<>();
         result.body(e.getDescription());

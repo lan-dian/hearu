@@ -2,6 +2,8 @@ package com.landao.hearu.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.landao.guardian.annotations.author.RequiredLogin;
+import com.landao.hearu.author.UserService;
 import com.landao.hearu.business.CommentService;
 import com.landao.hearu.business.TopicService;
 import com.landao.hearu.model.common.CommonResult;
@@ -12,9 +14,7 @@ import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
-import com.landao.hearu.safe.annotations.RequiredLogin;
-import com.landao.hearu.util.TokenUtil;
-import com.landao.hearu.util.check.CheckUtil;
+import com.landao.inspector.utils.InspectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,15 +34,17 @@ public class TopicController {
     @Resource
     CommentService commentService;
 
+    @Resource
+    UserService userService;
+
     /**
      * 发布话题
      */
     @PostMapping("/publish")
     public CommonResult<Void> publish(@RequestBody TopicInfo topicInfo) {
         CommonResult<Void> result = new CommonResult<>();
-        topicInfo.addCheck();
 
-        boolean publish = topicService.publish(topicInfo, TopicType.User);
+        boolean publish = topicService.publish(topicInfo, TopicType.User,userService.getUserId());
 
         return result.ok(publish);
     }
@@ -54,9 +56,12 @@ public class TopicController {
     public CommonResult<Void> likeTopic(@PathVariable Long topicId) {
         CommonResult<Void> result = new CommonResult<>();
 
-        CheckUtil.checkId(topicId);
+        boolean b = InspectUtils.checkId(topicId);
+        if(!b){
+            return result.err("id不合法");
+        }
 
-        boolean likeTopic = topicService.likeTopic(topicId);
+        boolean likeTopic = topicService.likeTopic(topicId,userService.getUserId());
 
         return result.ok(likeTopic);
     }
@@ -68,9 +73,12 @@ public class TopicController {
     public CommonResult<Void> unlikeTopic(@PathVariable Long topicId) {
         CommonResult<Void> result = new CommonResult<>();
 
-        CheckUtil.checkId(topicId);
+        boolean b = InspectUtils.checkId(topicId);
+        if(!b){
+            return result.err("id不合法");
+        }
 
-        boolean unlikeTopic = topicService.unlikeTopic(topicId);
+        boolean unlikeTopic = topicService.unlikeTopic(topicId,userService.getUserId());
 
         return result.ok(unlikeTopic, "你还没有点过赞呢");
     }
@@ -83,15 +91,18 @@ public class TopicController {
      */
     @PostMapping("/comment/{topicId}")
     public CommonResult<Void> commentTopic(@PathVariable Long topicId,
+                                           // @InspectField(value = "评论内容",max = 1024,trimType = TrimType.Trail)
                                            @RequestParam String content) {
         CommonResult<Void> result = new CommonResult<>();
 
-        CheckUtil.checkId(topicId);
+        boolean b = InspectUtils.checkId(topicId);
+        if(!b){
+            return result.err("id不合法");
+        }
 
-        CheckUtil.checkNotBlank(content, "评论内容");
-        CheckUtil.checkStringLength(content, "评论内容", 1024);
+        //todo 评论check
 
-        boolean comment = commentService.commentTopic(content, topicId);
+        boolean comment = commentService.commentTopic(content, topicId,userService.getUserId());
 
         return result.ok(comment);
     }
@@ -108,12 +119,12 @@ public class TopicController {
                                              @RequestParam String content) {
         CommonResult<Void> result = new CommonResult<>();
 
-        CheckUtil.checkId(commentId);
+        /*CheckUtil.checkId(commentId);
 
         CheckUtil.checkNotBlank(content, "评论内容");
-        CheckUtil.checkStringLength(content, "评论内容", 1024);
+        CheckUtil.checkStringLength(content, "评论内容", 1024);*/
 
-        boolean commentComment = commentService.commentComment(content, commentId);
+        boolean commentComment = commentService.commentComment(content, commentId,userService.getUserId());
 
         return result.ok(commentComment);
     }
@@ -126,10 +137,10 @@ public class TopicController {
                                                @RequestParam(defaultValue = "15") Integer limit) {
         CommonResult<PageDTO<TopicVO>> result = new CommonResult<>();
 
-        CheckUtil.checkNotNegative(page, "起始页数");
-        CheckUtil.checkNotNegative(limit, "分页条数");
+        /*CheckUtil.checkNotNegative(page, "起始页数");
+        CheckUtil.checkNotNegative(limit, "分页条数");*/
 
-        IPage<TopicVO> iPage = topicService.pageTopic(page, limit);
+        IPage<TopicVO> iPage = topicService.pageTopic(page, limit,userService.getUserId());
 
         return result.body(PageDTO.build(iPage));
     }
@@ -143,10 +154,10 @@ public class TopicController {
                                                         @PathVariable Long topicId) {
         CommonResult<PageDTO<CommentVO>> result = new CommonResult<>();
 
-        CheckUtil.checkNotNegative(page, "起始页数");
-        CheckUtil.checkNotNegative(limit, "分页条数");
+        /*CheckUtil.checkNotNegative(page, "起始页数");
+        CheckUtil.checkNotNegative(limit, "分页条数");*/
 
-        IPage<CommentVO> iPage = commentService.pageComment(page, limit, topicId);
+        IPage<CommentVO> iPage = commentService.pageComment(page, limit, topicId,userService.getUserId());
 
         return result.body(PageDTO.build(iPage));
     }
@@ -160,7 +171,7 @@ public class TopicController {
                                                                 @RequestParam Integer limit){
         CommonResult<List<CommentCommentVO>> result=new CommonResult<>();
 
-        List<CommentCommentVO> commentCommentVOS = commentService.listCommentComments(commentId, limit);
+        List<CommentCommentVO> commentCommentVOS = commentService.listCommentComments(commentId, limit,userService.getUserId());
 
         return result.body(commentCommentVOS);
     }
@@ -172,7 +183,7 @@ public class TopicController {
     public CommonResult<Void> likeComment(@PathVariable Long commentId){
         CommonResult<Void> result=new CommonResult<>();
 
-        boolean like = commentService.likeComment(TokenUtil.getUserId(), commentId);
+        boolean like = commentService.likeComment(userService.getUserId(), commentId);
 
         return result.ok(like);
     }
@@ -184,7 +195,7 @@ public class TopicController {
     public CommonResult<Void> unlikeComment(@PathVariable Long commentId){
         CommonResult<Void> result=new CommonResult<>();
 
-        boolean like = commentService.unLikeComment(TokenUtil.getUserId(), commentId);
+        boolean like = commentService.unLikeComment(userService.getUserId(), commentId);
 
         return result.ok(like,"你还没有点过赞呢");
     }
@@ -197,10 +208,10 @@ public class TopicController {
                                                         @RequestParam(defaultValue = "15") Integer limit){
         CommonResult<PageDTO<SelfTopicVO>> result=new CommonResult<>();
 
-        CheckUtil.checkNotNegative(page, "起始页数");
-        CheckUtil.checkNotNegative(limit, "分页条数");
+        /*CheckUtil.checkNotNegative(page, "起始页数");
+        CheckUtil.checkNotNegative(limit, "分页条数");*/
 
-        IPage<SelfTopicVO> iPage = topicService.pageSelfTopicVO(page, limit, TokenUtil.getUserId());
+        IPage<SelfTopicVO> iPage = topicService.pageSelfTopicVO(page, limit, userService.getUserId());
 
         return result.body(PageDTO.build(iPage));
     }

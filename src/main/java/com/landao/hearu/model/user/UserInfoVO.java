@@ -44,6 +44,11 @@ public class UserInfoVO {
     /**
      * 生日
      */
+    private LocalDate birth;
+
+    /**
+     * 生日
+     */
     private Integer age;
 
     public static UserInfoVO convert(User user){
@@ -54,6 +59,7 @@ public class UserInfoVO {
         userInfoVO.setSex(user.getSex());
         userInfoVO.setAvatar(user.getAvatar());
         userInfoVO.setSignature(user.getSignature());
+        userInfoVO.setBirth(user.getBirth());
         //计算年龄
         LocalDate birth = user.getBirth();
         LocalDate now = LocalDate.now();

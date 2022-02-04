@@ -15,14 +15,8 @@ api[0].list.push({
 api[0].list[0].list.push({
     order: '1',
     deprecated: 'false',
-    url: 'http://localhost:8002/api/upload',
+    url: 'http://110.40.157.12:8002/api/upload',
     desc: '文件上传',
-});
-api[0].list[0].list.push({
-    order: '2',
-    deprecated: 'false',
-    url: 'http://localhost:8002/api/test',
-    desc: '',
 });
 api[0].list.push({
     alias: 'TopicController',
@@ -34,67 +28,67 @@ api[0].list.push({
 api[0].list[1].list.push({
     order: '1',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/publish',
+    url: 'http://110.40.157.12:8002/topic/publish',
     desc: '发布话题',
 });
 api[0].list[1].list.push({
     order: '2',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/like/{topicId}',
+    url: 'http://110.40.157.12:8002/topic/like/{topicId}',
     desc: '给话题点赞',
 });
 api[0].list[1].list.push({
     order: '3',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/unlike/{topicId}',
+    url: 'http://110.40.157.12:8002/topic/unlike/{topicId}',
     desc: '取消对话题的点赞',
 });
 api[0].list[1].list.push({
     order: '4',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/comment/{topicId}',
+    url: 'http://110.40.157.12:8002/topic/comment/{topicId}',
     desc: '评论话题',
 });
 api[0].list[1].list.push({
     order: '5',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/comment/comment/{commentId}',
+    url: 'http://110.40.157.12:8002/topic/comment/comment/{commentId}',
     desc: '评论的评论',
 });
 api[0].list[1].list.push({
     order: '6',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/page',
+    url: 'http://110.40.157.12:8002/topic/page',
     desc: '分页获取话题',
 });
 api[0].list[1].list.push({
     order: '7',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/comment/page/{topicId}',
+    url: 'http://110.40.157.12:8002/topic/comment/page/{topicId}',
     desc: '分页获取评论',
 });
 api[0].list[1].list.push({
     order: '8',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/comment/inner/{commentId}',
+    url: 'http://110.40.157.12:8002/topic/comment/inner/{commentId}',
     desc: '获取评论的评论',
 });
 api[0].list[1].list.push({
     order: '9',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/comment/like/{commentId}',
+    url: 'http://110.40.157.12:8002/topic/comment/like/{commentId}',
     desc: '点赞评论',
 });
 api[0].list[1].list.push({
     order: '10',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/comment/unlike/{commentId}',
+    url: 'http://110.40.157.12:8002/topic/comment/unlike/{commentId}',
     desc: '取消点赞评论',
 });
 api[0].list[1].list.push({
     order: '11',
     deprecated: 'false',
-    url: 'http://localhost:8002/topic/mine',
+    url: 'http://110.40.157.12:8002/topic/mine',
     desc: '获取我发布过的话题',
 });
 api[0].list.push({
@@ -107,31 +101,31 @@ api[0].list.push({
 api[0].list[2].list.push({
     order: '1',
     deprecated: 'false',
-    url: 'http://localhost:8002/user/info',
+    url: 'http://110.40.157.12:8002/user/info',
     desc: '获取用户基本信息',
 });
 api[0].list[2].list.push({
     order: '2',
     deprecated: 'false',
-    url: 'http://localhost:8002/user/login',
+    url: 'http://110.40.157.12:8002/user/login',
     desc: '用户登陆',
 });
 api[0].list[2].list.push({
     order: '3',
     deprecated: 'false',
-    url: 'http://localhost:8002/user/register',
+    url: 'http://110.40.157.12:8002/user/register',
     desc: '用户注册',
 });
 api[0].list[2].list.push({
     order: '4',
     deprecated: 'false',
-    url: 'http://localhost:8002/user/change/info',
+    url: 'http://110.40.157.12:8002/user/change/info',
     desc: '修改个人信息',
 });
 api[0].list[2].list.push({
     order: '5',
     deprecated: 'false',
-    url: 'http://localhost:8002/user/change/password',
+    url: 'http://110.40.157.12:8002/user/change/password',
     desc: '修改密码',
 });
 document.onkeydown = keyDownSearch;
