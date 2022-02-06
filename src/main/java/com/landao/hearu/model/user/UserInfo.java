@@ -1,12 +1,11 @@
 package com.landao.hearu.model.user;
 
 
-import com.landao.inspector.annotations.InspectField;
+import com.landao.inspector.annotations.Inspected;
 import com.landao.inspector.annotations.special.TelePhone;
-import com.landao.inspector.annotations.special.group.AddGroup;
 import com.landao.inspector.annotations.special.group.Id;
-import com.landao.inspector.annotations.special.group.UpdateGroup;
-import com.landao.inspector.model.Inspect;
+import com.landao.inspector.annotations.special.group.UpdateIgnore;
+import com.landao.inspector.core.Inspect;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -30,20 +29,20 @@ public class UserInfo implements Inspect {
      * 用户名
      * @apiNote 最大长度32
      */
-    @InspectField(value = "用户名",max = 32)
+    @Inspected(value = "用户名",max = 32)
     private String name;
-
 
     /**
      * 电话
      */
     @TelePhone
-    @InspectField(value = "电话")
+    @UpdateIgnore
     private String telephone;
 
     /**
-     * 性别
+     * 密码
      */
+    @UpdateIgnore
     private String password;
 
     /**
@@ -51,46 +50,47 @@ public class UserInfo implements Inspect {
      */
     private String sex;
 
-
     /**
      * 头像
      */
     @Nullable
-    @InspectField(value = "头像",max = 128)
+    @Inspected(value = "头像",max = 128)
     private String avatar;
-
 
     /**
      * 个性签名
      */
     @Nullable
-    @InspectField(value = "个性签名",max =64)
+    @Inspected(value = "个性签名",max =64)
     private String signature;
-
 
     private LocalDate birth;
 
 
-
     @Override
-    public void inspect(Class<?> group) {
-        if(UpdateGroup.class.equals(group)){
-            telephone=null;
-            password=null;
-        }else if(AddGroup.class.equals(group)){
+    public void inspect(Class<?> group,String supperName) {
+        if(isAddGroup(group)){
             if(!StringUtils.hasText(password)){
-
+                addIllegal("password","密码不能为空");
+            }
+            if(password.length()!=32){
+                addIllegal("password","密码必须用md5加密");
             }
             password=password.toLowerCase(Locale.ROOT);//转化成小写
         }
-
         if(!(Objects.equals(sex,"女") || Objects.equals(sex,"男"))){
-            throw new IllegalArgumentException("性别必须为男或女");
+            addIllegal("sex","性别必须为男或女");
         }
-        if(birth.isAfter(LocalDate.now())){
-            throw new IllegalArgumentException("出生日期不能晚于现在");
+        if(birth==null){
+            addIllegal("birth","生日不能为空");
+        }else {
+            if(birth.isAfter(LocalDate.now())){
+                addIllegal("birth","出生日期不能晚于现在");
+            }
         }
     }
+
+
 
 
 }

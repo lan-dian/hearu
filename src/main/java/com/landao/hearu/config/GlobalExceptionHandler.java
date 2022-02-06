@@ -5,7 +5,8 @@ import com.landao.hearu.model.common.CommonResult;
 import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.exception.UnAuthorizationException;
 import com.landao.hearu.model.exception.UnLoginException;
-import com.landao.hearu.util.RequestLogUtil;
+import com.landao.inspector.model.collection.IllegalsHolder;
+import com.landao.inspector.model.exception.InspectIllegalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
     public CommonResult<Void> unLoginHandler(UnLoginException e){
         CommonResult<Void> result=new CommonResult<>();
         result.err("未登录");
-        RequestLogUtil.endLog(result);
+        // RequestLogUtil.endLog(result);
         return result;
     }
 
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
     public CommonResult<String> unAuthorizationHandler(UnAuthorizationException e){
         CommonResult<String> result=new CommonResult<>();
         result.body(e.getDescription());
-        RequestLogUtil.endLog(result);
+        // RequestLogUtil.endLog(result);
         return result;
     }
 
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public CommonResult<Object> serviceHandler(BusinessException e){
         CommonResult<Object> result = new CommonResult<>(e.getCode(), e.getMsg(), e.getData());
-        RequestLogUtil.endLog(result);
+        // RequestLogUtil.endLog(result);
         return result;
     }
 
@@ -58,12 +59,18 @@ public class GlobalExceptionHandler {
      * 参数不合法
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    // @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult<Void> illegalArgumentHandler(IllegalArgumentException e){
         CommonResult<Void> result = new CommonResult<>();
         result.err(e.getMessage());
-        RequestLogUtil.endLog(result);
+        // RequestLogUtil.endLog(result);
         return result;
+    }
+
+    @ExceptionHandler(InspectIllegalException.class)
+    public CommonResult<IllegalsHolder> inspectIllegalHandler(InspectIllegalException e){
+        CommonResult<IllegalsHolder> result=new CommonResult<>();
+        return result.err().setData(e.getIllegalList());
     }
 
     /**
@@ -73,7 +80,7 @@ public class GlobalExceptionHandler {
     public CommonResult<Void> missingParameterHandler(MissingServletRequestParameterException e){
         CommonResult<Void> result = new CommonResult<>();
         result.err(e.getParameterName()+"未传递");
-        RequestLogUtil.endLog(result);
+        // RequestLogUtil.endLog(result);
         return result;
     }
 
@@ -90,7 +97,7 @@ public class GlobalExceptionHandler {
             }
         }
         result.err(e.toString(),-999);
-        RequestLogUtil.endLog(result);
+        // RequestLogUtil.endLog(result);
         return result;
     }
 

@@ -1,5 +1,6 @@
 package com.landao.hearu.author;
 
+import com.landao.guardian.annotations.token.UserId;
 import com.landao.hearu.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserTokenBean {
 
-    // @UserId
+    @UserId
     private Long id;
 
     private String name;

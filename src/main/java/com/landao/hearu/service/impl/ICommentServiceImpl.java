@@ -31,7 +31,7 @@ public class ICommentServiceImpl extends ServiceImpl<CommentMapper, Comment> imp
             if(commentCount>3){
                 commentCount=3L;
             }
-            List<CommentCommentVO> commentCommentVOS = listCommentCommentVO(userId, comment.getCommentId(), Math.toIntExact(commentCount));
+            List<CommentCommentVO> commentCommentVOS = listCommentCommentVO(comment.getCommentId(),userId, Math.toIntExact(commentCount));
             comment.setComments(commentCommentVOS);
         }
     }

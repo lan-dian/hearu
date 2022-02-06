@@ -8,6 +8,8 @@ import com.landao.hearu.model.user.LoginVO;
 import com.landao.hearu.model.user.UserInfo;
 import com.landao.hearu.model.user.UserInfoVO;
 import com.landao.hearu.util.CheckUtil;
+import com.landao.inspector.annotations.Inspected;
+import com.landao.inspector.annotations.special.TelePhone;
 import com.landao.inspector.annotations.special.group.AddInspect;
 import com.landao.inspector.annotations.special.group.UpdateInspect;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,8 @@ public class UserController {
      */
     @RequiredLogin
     @GetMapping("/info")
-    public CommonResult<UserInfoVO> info(){
-        CommonResult<UserInfoVO> result=new CommonResult<>();
+    public CommonResult<UserInfoVO> info() {
+        CommonResult<UserInfoVO> result = new CommonResult<>();
 
         UserInfoVO userInfo = userService.getUserInfo(userService.getUserId());
 
@@ -41,20 +43,21 @@ public class UserController {
 
     /**
      * 用户登陆
+     *
      * @param telephone 电话号码|13034744809
-     * @param password 密码(md5加密)|e10adc3949ba59abbe56e057f20f883e
+     * @param password  密码(md5加密)|e10adc3949ba59abbe56e057f20f883e
      */
     @PostMapping("/login")
-    public CommonResult<LoginVO> login(@RequestParam String telephone,
-                                       @RequestParam String password){
-        CommonResult<LoginVO> result=new CommonResult<>();
+    public CommonResult<LoginVO> login(@TelePhone String telephone,
+                                       @RequestParam String password) {
+        CommonResult<LoginVO> result = new CommonResult<>();
 
 
         // CheckUtil.checkNotBlank(telephone,"电话");
         // CheckUtil.checkTelephone(telephone);
 
-        CheckUtil.checkNotBlank(password,"密码");
-        if(password.length()!=32){
+        CheckUtil.checkNotBlank(password, "密码");
+        if (password.length() != 32) {
             return result.err("请用md5加密密码");
         }
 
@@ -80,14 +83,15 @@ public class UserController {
 
     /**
      * 修改个人信息
+     *
      * @param userInfo 不要传递telephone和password
-     * userId 也不需要传递
+     *                 userId 也不需要传递
      */
     @RequiredLogin
     @UpdateInspect
     @PostMapping("/change/info")
-    public CommonResult<Void> changeInfo(@RequestBody UserInfo userInfo){
-        CommonResult<Void> result=new CommonResult<>();
+    public CommonResult<Void> changeInfo(@RequestBody UserInfo userInfo) {
+        CommonResult<Void> result = new CommonResult<>();
         userInfo.setId(userService.getUserId());
 
         boolean update = userService.changeUserInfo(userInfo);
@@ -97,28 +101,24 @@ public class UserController {
 
     /**
      * 修改密码
+     *
      * @param oldPassword 原密码
      * @param newPassword 新密码
      * @apiNote 两个都用md5加密
      */
     @RequiredLogin
     @PostMapping("/change/password")
-    public CommonResult<Void> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword){
-        CommonResult<Void> result=new CommonResult<>();
+    public CommonResult<Void> changePassword(@RequestParam @Inspected(value = "旧秘密",min = 32,max = 32)
+                                                         String oldPassword,
+                                             @Inspected(value = "新秘密",min = 32,max = 32)
+                                             @RequestParam String newPassword) {
+        CommonResult<Void> result = new CommonResult<>();
 
-        CheckUtil.checkNotBlank(oldPassword,"旧密码");
-        if(oldPassword.length()!=32){
-            return result.err("旧密码请用md5加密");
-        }
-        CheckUtil.checkNotBlank(newPassword,"新密码");
-        if(newPassword.length()!=32){
-            return result.err("新密码请用md5加密");
-        }
-        if(Objects.equals(oldPassword,newPassword)){
+        if (Objects.equals(oldPassword, newPassword)) {
             return result.err("新密码不能和旧密码相同");
         }
 
-        boolean update = userService.changePassword(oldPassword,newPassword);
+        boolean update = userService.changePassword(oldPassword, newPassword);
 
         return result.ok(update);
     }

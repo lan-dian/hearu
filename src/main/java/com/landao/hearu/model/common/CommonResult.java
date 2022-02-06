@@ -1,11 +1,13 @@
 package com.landao.hearu.model.common;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 统一返回结果
  */
 @Data
+@Accessors(chain = true)
 public class CommonResult<T> {
 
     /**

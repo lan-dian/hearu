@@ -75,7 +75,7 @@ public class User implements Serializable {
         user.setSex(userInfo.getSex());
         user.setAvatar(userInfo.getAvatar());
         user.setSignature(userInfo.getSignature());
-        user.setBirth(userInfo.getBirth());
+        // user.setBirth(userInfo.getBirth());
         return user;
     }
 

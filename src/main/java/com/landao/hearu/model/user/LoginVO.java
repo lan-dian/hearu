@@ -30,8 +30,4 @@ public class LoginVO {
      */
     private Set<RoleEnum> roles;
 
-
-
-
-
 }

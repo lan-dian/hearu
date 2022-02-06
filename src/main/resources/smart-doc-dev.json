@@ -12,7 +12,7 @@
     "name": "Authorization",
     "type": "string",
     "desc": "Bearer token",
-    "value":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoi5bi454-C5rSBIn0.qm1OxMY28uZ38cHY3hE0-r4fUZhCER51sFySVc06PHw",
+    "value":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiJHVzZXJUeXBlIjoiZGVmYXVsdCIsIm5hbWUiOiLluLjnj4LmtIEifQ.Qfr72UynWYPhK7BFilxlCq5LXAMkhH5J0k8bame0HY8",
     "required": true,
     "pathPatterns": "/**"
   }]
