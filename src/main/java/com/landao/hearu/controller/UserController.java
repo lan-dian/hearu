@@ -1,5 +1,10 @@
 package com.landao.hearu.controller;
 
+import com.landao.checker.annotations.Check;
+import com.landao.checker.annotations.special.TelePhone;
+import com.landao.checker.annotations.special.group.AddCheck;
+import com.landao.checker.annotations.special.group.CheckGroup;
+import com.landao.checker.annotations.special.group.UpdateCheck;
 import com.landao.guardian.annotations.author.RequiredLogin;
 import com.landao.hearu.author.UserService;
 import com.landao.hearu.model.common.CommonResult;
@@ -7,11 +12,6 @@ import com.landao.hearu.model.enums.RoleEnum;
 import com.landao.hearu.model.user.LoginVO;
 import com.landao.hearu.model.user.UserInfo;
 import com.landao.hearu.model.user.UserInfoVO;
-import com.landao.hearu.util.CheckUtil;
-import com.landao.inspector.annotations.Inspected;
-import com.landao.inspector.annotations.special.TelePhone;
-import com.landao.inspector.annotations.special.group.AddInspect;
-import com.landao.inspector.annotations.special.group.UpdateInspect;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -49,17 +49,9 @@ public class UserController {
      */
     @PostMapping("/login")
     public CommonResult<LoginVO> login(@TelePhone String telephone,
-                                       @RequestParam String password) {
+                                       @Check(value = "密码",min = 32,max = 32) String password) {
         CommonResult<LoginVO> result = new CommonResult<>();
 
-
-        // CheckUtil.checkNotBlank(telephone,"电话");
-        // CheckUtil.checkTelephone(telephone);
-
-        CheckUtil.checkNotBlank(password, "密码");
-        if (password.length() != 32) {
-            return result.err("请用md5加密密码");
-        }
 
         LoginVO loginVO = userService.login(telephone, password.toLowerCase(Locale.ROOT));
 
@@ -72,7 +64,7 @@ public class UserController {
      * @param userInfo 用户信息
      */
     @PostMapping("/register")
-    @AddInspect
+    @AddCheck
     public CommonResult<Void> register(@RequestBody UserInfo userInfo) {
         CommonResult<Void> result = new CommonResult<>();
 
@@ -88,8 +80,9 @@ public class UserController {
      *                 userId 也不需要传递
      */
     @RequiredLogin
-    @UpdateInspect
+    @UpdateCheck
     @PostMapping("/change/info")
+    @CheckGroup(AddCheck.class)
     public CommonResult<Void> changeInfo(@RequestBody UserInfo userInfo) {
         CommonResult<Void> result = new CommonResult<>();
         userInfo.setId(userService.getUserId());
@@ -108,9 +101,9 @@ public class UserController {
      */
     @RequiredLogin
     @PostMapping("/change/password")
-    public CommonResult<Void> changePassword(@RequestParam @Inspected(value = "旧秘密",min = 32,max = 32)
+    public CommonResult<Void> changePassword(@RequestParam @Check(value = "旧秘密",min = 32,max = 32)
                                                          String oldPassword,
-                                             @Inspected(value = "新秘密",min = 32,max = 32)
+                                             @Check(value = "新秘密",min = 32,max = 32)
                                              @RequestParam String newPassword) {
         CommonResult<Void> result = new CommonResult<>();
 
@@ -119,6 +112,10 @@ public class UserController {
         }
 
         boolean update = userService.changePassword(oldPassword, newPassword);
+
+       if(update){
+           userService.logout();
+       }
 
         return result.ok(update);
     }

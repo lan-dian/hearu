@@ -78,15 +78,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>4.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.landao</groupId>
-            <artifactId>inspector-spring-boot-starter</artifactId>
+            <artifactId>checker-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.landao</groupId>
-            <artifactId>guardian-spring-boot-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>web-plus-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

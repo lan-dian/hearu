@@ -8,6 +8,12 @@ mybatis-plus:
 spring:
   application:
     name: hearu
+  servlet:
+    multipart:
+      #上传文件的最大值
+      max-file-size: 15MB
+      #请求文件的最大值
+      max-request-size: 50MB
 
 
 guardian:

@@ -1,6 +1,6 @@
 package com.landao.hearu.model.common;
 
-import com.landao.guardian.core.context.GuardianContext;
+import com.landao.guardian.core.GuardianContext;
 import com.landao.hearu.author.UserTokenBean;
 import lombok.Data;
 import lombok.NoArgsConstructor;

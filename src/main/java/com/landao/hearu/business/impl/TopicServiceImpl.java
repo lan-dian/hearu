@@ -2,7 +2,6 @@ package com.landao.hearu.business.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.landao.guardian.core.context.GuardianContext;
 import com.landao.hearu.business.TopicService;
 import com.landao.hearu.entity.Topic;
 import com.landao.hearu.entity.TopicLike;

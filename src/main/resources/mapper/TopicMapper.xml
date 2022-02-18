@@ -25,7 +25,7 @@
                (select count(*) from comment c where c.topic_id=t.id) as comment_count,
                (select count(*) from topic_like tl where tl.topic_id=t.id)as like_count,
                t.user_id=#{userId} as mine,
-               (select count(*) from topic_like tl where tl.topic_id=t.id and tl.user_id=#{userId})=#{userId} as `like`
+               (select count(*) from topic_like tl where tl.topic_id=t.id and tl.user_id=#{userId})=1 as `like`
         from topic t
                  inner join user u on t.user_id = u.id
         where t.type=#{topicType}

@@ -1,7 +1,8 @@
 package com.landao.hearu.model.topic;
 
-import com.landao.inspector.annotations.Inspected;
-import com.landao.inspector.annotations.special.group.Id;
+
+import com.landao.checker.annotations.Check;
+import com.landao.checker.annotations.special.group.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,13 +16,13 @@ public class TopicInfo{
     /**
      * 标题
      */
-    @Inspected(value = "标题",max= 128)
+    @Check(value = "标题",max= 128)
     private String title;
 
     /**
      * 内容
      */
-    @Inspected(value = "内容",max = 50000)
+    @Check(value = "内容",max = 50000)
     private String content;
 
 

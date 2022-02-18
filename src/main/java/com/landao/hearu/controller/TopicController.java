@@ -2,6 +2,8 @@ package com.landao.hearu.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.landao.checker.annotations.Check;
+import com.landao.checker.model.enums.TrimType;
 import com.landao.guardian.annotations.author.RequiredLogin;
 import com.landao.hearu.author.UserService;
 import com.landao.hearu.business.CommentService;
@@ -14,8 +16,6 @@ import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
-import com.landao.inspector.annotations.Inspected;
-import com.landao.inspector.model.enums.TrimType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -83,8 +83,7 @@ public class TopicController {
      */
     @PostMapping("/comment/{topicId}")
     public CommonResult<Void> commentTopic(@PathVariable Long topicId,
-                                           @Inspected(value = "评论内容", max = 1024, trimType = TrimType.Trail)
-                                           @RequestParam String content) {
+                                           @Check(value = "评论内容", max = 1024, trimType = TrimType.Trail) String content) {
         CommonResult<Void> result = new CommonResult<>();
 
         boolean comment = commentService.commentTopic(content, topicId, userService.getUserId());
@@ -101,8 +100,7 @@ public class TopicController {
      */
     @PostMapping("/comment/comment/{commentId}")
     public CommonResult<Void> commentComment(@PathVariable Long commentId,
-                                             @Inspected(value = "评论内容", max = 1024, trimType = TrimType.Trail)
-                                             @RequestParam String content) {
+                                             @Check(value = "评论内容", max = 1024, trimType = TrimType.Trail) String content) {
         CommonResult<Void> result = new CommonResult<>();
 
         boolean commentComment = commentService.commentComment(content, commentId, userService.getUserId());
@@ -131,9 +129,6 @@ public class TopicController {
                                                         @RequestParam(defaultValue = "15") Integer limit,
                                                         @PathVariable Long topicId) {
         CommonResult<PageDTO<CommentVO>> result = new CommonResult<>();
-
-        /*CheckUtil.checkNotNegative(page, "起始页数");
-        CheckUtil.checkNotNegative(limit, "分页条数");*/
 
         IPage<CommentVO> iPage = commentService.pageComment(page, limit, topicId, userService.getUserId());
 
@@ -187,10 +182,9 @@ public class TopicController {
                                                         @RequestParam(defaultValue = "15") Integer limit) {
         CommonResult<PageDTO<SelfTopicVO>> result = new CommonResult<>();
 
-        /*CheckUtil.checkNotNegative(page, "起始页数");
-        CheckUtil.checkNotNegative(limit, "分页条数");*/
 
         IPage<SelfTopicVO> iPage = topicService.pageSelfTopicVO(page, limit, userService.getUserId());
+
 
         return result.body(PageDTO.build(iPage));
     }

@@ -1,12 +1,12 @@
 package com.landao.hearu.config;
 
 
+import com.landao.checker.model.collection.IllegalsHolder;
+import com.landao.checker.model.exception.CheckIllegalException;
+import com.landao.guardian.exception.author.UnAuthorizationException;
+import com.landao.guardian.exception.author.UnLoginException;
 import com.landao.hearu.model.common.CommonResult;
 import com.landao.hearu.model.exception.BusinessException;
-import com.landao.hearu.model.exception.UnAuthorizationException;
-import com.landao.hearu.model.exception.UnLoginException;
-import com.landao.inspector.model.collection.IllegalsHolder;
-import com.landao.inspector.model.exception.InspectIllegalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -28,9 +28,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public CommonResult<Void> unLoginHandler(UnLoginException e){
         CommonResult<Void> result=new CommonResult<>();
-        result.err("未登录");
-        // RequestLogUtil.endLog(result);
-        return result;
+        return result.err(e.getMessage());
     }
 
     /**
@@ -40,9 +38,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public CommonResult<String> unAuthorizationHandler(UnAuthorizationException e){
         CommonResult<String> result=new CommonResult<>();
-        result.body(e.getDescription());
-        // RequestLogUtil.endLog(result);
-        return result;
+        return result.body(e.getMessage());
     }
 
     /**
@@ -50,25 +46,22 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public CommonResult<Object> serviceHandler(BusinessException e){
-        CommonResult<Object> result = new CommonResult<>(e.getCode(), e.getMsg(), e.getData());
-        // RequestLogUtil.endLog(result);
-        return result;
+        return new CommonResult<>(e.getCode(), e.getMsg(), e.getData());
     }
 
     /**
      * 参数不合法
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    // @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult<Void> illegalArgumentHandler(IllegalArgumentException e){
         CommonResult<Void> result = new CommonResult<>();
-        result.err(e.getMessage());
-        // RequestLogUtil.endLog(result);
-        return result;
+        return  result.err(e.getMessage());
     }
 
-    @ExceptionHandler(InspectIllegalException.class)
-    public CommonResult<IllegalsHolder> inspectIllegalHandler(InspectIllegalException e){
+    @ExceptionHandler(CheckIllegalException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CommonResult<IllegalsHolder> inspectIllegalHandler(CheckIllegalException e){
         CommonResult<IllegalsHolder> result=new CommonResult<>();
         return result.err().setData(e.getIllegalList());
     }
@@ -79,9 +72,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public CommonResult<Void> missingParameterHandler(MissingServletRequestParameterException e){
         CommonResult<Void> result = new CommonResult<>();
-        result.err(e.getParameterName()+"未传递");
-        // RequestLogUtil.endLog(result);
-        return result;
+        return result.err(e.getParameterName()+"未传递");
     }
 
     /**
@@ -90,15 +81,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
 	public CommonResult<Void> exceptionHandler(Throwable e){
         CommonResult<Void> result = new CommonResult<>();
+
         StackTraceElement[] stackTrace = e.getStackTrace();
         for (StackTraceElement element : stackTrace) {
             if(element.getClassName().startsWith("com.landao")){
                 log.error("类:{} 方法:{} 行:{}",element.getClassName(),element.getMethodName(),element.getLineNumber());
             }
         }
-        result.err(e.toString(),-999);
-        // RequestLogUtil.endLog(result);
-        return result;
+        return result.err(e.getMessage(),-999);
     }
 
 }
