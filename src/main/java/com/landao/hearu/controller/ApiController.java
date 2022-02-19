@@ -1,17 +1,18 @@
 package com.landao.hearu.controller;
 
 import com.landao.guardian.annotations.author.RequiredLogin;
-import com.landao.hearu.model.common.CommonResult;
 import com.landao.hearu.util.FileUploadUtil;
-import org.springframework.web.bind.annotation.*;
+import com.landao.web.plus.annotation.RequestController;
+import com.landao.web.plus.model.response.CommonResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 
 /**
  * 公共访问接口
  */
-@RestController
-@RequestMapping("/api")
+@RequestController("/api")
 public class ApiController {
 
 
@@ -28,7 +29,7 @@ public class ApiController {
         CommonResult<String> result=new CommonResult<>();
 
         if(file.isEmpty()){
-            return result.err("文件不能为空");
+            return result.error("文件不能为空");
         }
 
         String resAddress = FileUploadUtil.uploadFile(file);

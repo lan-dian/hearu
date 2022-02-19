@@ -6,11 +6,11 @@ import com.landao.hearu.business.TopicService;
 import com.landao.hearu.entity.Topic;
 import com.landao.hearu.entity.TopicLike;
 import com.landao.hearu.model.enums.TopicType;
-import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
 import com.landao.hearu.service.*;
+import com.landao.web.plus.model.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

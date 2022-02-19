@@ -8,14 +8,15 @@ import com.landao.guardian.annotations.author.RequiredLogin;
 import com.landao.hearu.author.UserService;
 import com.landao.hearu.business.CommentService;
 import com.landao.hearu.business.TopicService;
-import com.landao.hearu.model.common.CommonResult;
-import com.landao.hearu.model.common.PageDTO;
 import com.landao.hearu.model.enums.TopicType;
 import com.landao.hearu.model.page.comment.CommentCommentVO;
 import com.landao.hearu.model.page.comment.CommentVO;
 import com.landao.hearu.model.page.topic.SelfTopicVO;
 import com.landao.hearu.model.page.topic.TopicVO;
 import com.landao.hearu.model.topic.TopicInfo;
+import com.landao.web.plus.annotation.RequestController;
+import com.landao.web.plus.model.response.CommonResult;
+import com.landao.web.plus.model.response.PageDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,8 +26,7 @@ import java.util.List;
  * 话题相关
  */
 @RequiredLogin
-@RestController
-@RequestMapping("/topic")
+@RequestController("/topic")
 public class TopicController {
 
     @Resource
@@ -43,11 +43,10 @@ public class TopicController {
      */
     @PostMapping("/publish")
     public CommonResult<Void> publish(@RequestBody TopicInfo topicInfo) {
-        CommonResult<Void> result = new CommonResult<>();
 
         boolean publish = topicService.publish(topicInfo, TopicType.User, userService.getUserId());
 
-        return result.ok(publish);
+        return CommonResult.ok(publish);
     }
 
     /**
@@ -55,11 +54,10 @@ public class TopicController {
      */
     @GetMapping("/like/{topicId}")
     public CommonResult<Void> likeTopic(@PathVariable Long topicId) {
-        CommonResult<Void> result = new CommonResult<>();
 
         boolean likeTopic = topicService.likeTopic(topicId, userService.getUserId());
 
-        return result.ok(likeTopic);
+        return CommonResult.ok(likeTopic);
     }
 
     /**
@@ -67,12 +65,11 @@ public class TopicController {
      */
     @GetMapping("/unlike/{topicId}")
     public CommonResult<Void> unlikeTopic(@PathVariable Long topicId) {
-        CommonResult<Void> result = new CommonResult<>();
 
 
         boolean unlikeTopic = topicService.unlikeTopic(topicId, userService.getUserId());
 
-        return result.ok(unlikeTopic, "你还没有点过赞呢");
+        return CommonResult.ok(unlikeTopic, "你还没有点过赞呢");
     }
 
     /**
@@ -84,11 +81,10 @@ public class TopicController {
     @PostMapping("/comment/{topicId}")
     public CommonResult<Void> commentTopic(@PathVariable Long topicId,
                                            @Check(value = "评论内容", max = 1024, trimType = TrimType.Trail) String content) {
-        CommonResult<Void> result = new CommonResult<>();
 
         boolean comment = commentService.commentTopic(content, topicId, userService.getUserId());
 
-        return result.ok(comment);
+        return CommonResult.ok(comment);
     }
 
 
@@ -101,11 +97,10 @@ public class TopicController {
     @PostMapping("/comment/comment/{commentId}")
     public CommonResult<Void> commentComment(@PathVariable Long commentId,
                                              @Check(value = "评论内容", max = 1024, trimType = TrimType.Trail) String content) {
-        CommonResult<Void> result = new CommonResult<>();
 
         boolean commentComment = commentService.commentComment(content, commentId, userService.getUserId());
 
-        return result.ok(commentComment);
+        return CommonResult.ok(commentComment);
     }
 
     /**
@@ -155,11 +150,10 @@ public class TopicController {
      */
     @GetMapping("/comment/like/{commentId}")
     public CommonResult<Void> likeComment(@PathVariable Long commentId) {
-        CommonResult<Void> result = new CommonResult<>();
 
         boolean like = commentService.likeComment(userService.getUserId(), commentId);
 
-        return result.ok(like);
+        return CommonResult.ok(like);
     }
 
     /**
@@ -167,11 +161,10 @@ public class TopicController {
      */
     @GetMapping("/comment/unlike/{commentId}")
     public CommonResult<Void> unlikeComment(@PathVariable Long commentId) {
-        CommonResult<Void> result = new CommonResult<>();
 
         boolean like = commentService.unLikeComment(userService.getUserId(), commentId);
 
-        return result.ok(like, "你还没有点过赞呢");
+        return CommonResult.ok(like, "你还没有点过赞呢");
     }
 
     /**

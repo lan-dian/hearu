@@ -5,12 +5,12 @@ import com.landao.guardian.core.TokenService;
 import com.landao.hearu.entity.User;
 import com.landao.hearu.entity.UserRole;
 import com.landao.hearu.model.enums.RoleEnum;
-import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.user.LoginVO;
 import com.landao.hearu.model.user.UserInfo;
 import com.landao.hearu.model.user.UserInfoVO;
 import com.landao.hearu.service.IUserRoleService;
 import com.landao.hearu.service.IUserService;
+import com.landao.web.plus.model.exception.BusinessException;
 import org.springframework.dao.DuplicateKeyException;
 
 import javax.annotation.Resource;

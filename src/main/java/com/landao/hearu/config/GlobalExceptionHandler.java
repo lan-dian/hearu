@@ -5,8 +5,8 @@ import com.landao.checker.model.collection.IllegalsHolder;
 import com.landao.checker.model.exception.CheckIllegalException;
 import com.landao.guardian.exception.author.UnAuthorizationException;
 import com.landao.guardian.exception.author.UnLoginException;
-import com.landao.hearu.model.common.CommonResult;
-import com.landao.hearu.model.exception.BusinessException;
+import com.landao.web.plus.model.exception.BusinessException;
+import com.landao.web.plus.model.response.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -27,8 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnLoginException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public CommonResult<Void> unLoginHandler(UnLoginException e){
-        CommonResult<Void> result=new CommonResult<>();
-        return result.err(e.getMessage());
+        return CommonResult.err(e.getMessage());
     }
 
     /**
@@ -36,9 +35,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UnAuthorizationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public CommonResult<String> unAuthorizationHandler(UnAuthorizationException e){
-        CommonResult<String> result=new CommonResult<>();
-        return result.body(e.getMessage());
+    public CommonResult<Void> unAuthorizationHandler(UnAuthorizationException e){
+        return CommonResult.err(e.getMessage());
     }
 
     /**
@@ -46,24 +44,22 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public CommonResult<Object> serviceHandler(BusinessException e){
-        return new CommonResult<>(e.getCode(), e.getMsg(), e.getData());
+        return new CommonResult<>(e);
     }
 
     /**
      * 参数不合法
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult<Void> illegalArgumentHandler(IllegalArgumentException e){
-        CommonResult<Void> result = new CommonResult<>();
-        return  result.err(e.getMessage());
+        return  CommonResult.err(e.getMessage());
     }
 
     @ExceptionHandler(CheckIllegalException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult<IllegalsHolder> inspectIllegalHandler(CheckIllegalException e){
         CommonResult<IllegalsHolder> result=new CommonResult<>();
-        return result.err().setData(e.getIllegalList());
+        return result.err(e.getIllegalList());
     }
 
     /**
@@ -71,8 +67,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public CommonResult<Void> missingParameterHandler(MissingServletRequestParameterException e){
-        CommonResult<Void> result = new CommonResult<>();
-        return result.err(e.getParameterName()+"未传递");
+        return CommonResult.err(e.getParameterName()+"未传递");
     }
 
     /**
@@ -80,7 +75,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Throwable.class)
 	public CommonResult<Void> exceptionHandler(Throwable e){
-        CommonResult<Void> result = new CommonResult<>();
 
         StackTraceElement[] stackTrace = e.getStackTrace();
         for (StackTraceElement element : stackTrace) {
@@ -88,7 +82,7 @@ public class GlobalExceptionHandler {
                 log.error("类:{} 方法:{} 行:{}",element.getClassName(),element.getMethodName(),element.getLineNumber());
             }
         }
-        return result.err(e.getMessage(),-999);
+        return CommonResult.err(e.getMessage(),-999);
     }
 
 }

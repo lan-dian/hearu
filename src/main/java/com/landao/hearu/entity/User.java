@@ -2,8 +2,8 @@ package com.landao.hearu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.landao.hearu.model.exception.BusinessException;
 import com.landao.hearu.model.user.UserInfo;
+import com.landao.web.plus.model.exception.BusinessException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;

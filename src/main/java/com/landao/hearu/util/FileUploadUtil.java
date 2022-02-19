@@ -1,6 +1,7 @@
 package com.landao.hearu.util;
 
-import com.landao.hearu.model.exception.BusinessException;
+import com.landao.web.plus.model.exception.BusinessException;
+import com.landao.web.plus.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,7 @@ public class FileUploadUtil {
         try {
             file.transferTo(new File(dir, fileName));
         } catch (IOException e) {
-            log.error(JsonUtil.parse(e));
+            log.error(JsonUtils.parse(e));
             throw new BusinessException("文件上传失败");
         }
 

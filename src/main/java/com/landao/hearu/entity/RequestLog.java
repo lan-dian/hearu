@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.landao.hearu.model.common.LogDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -75,7 +74,7 @@ public class RequestLog implements Serializable {
     private String classMethod;
 
 
-    public static RequestLog convert(LogDTO logDTO){
+/*    public static RequestLog convert(LogDTO logDTO){
         long endTime = System.currentTimeMillis();
         RequestLog requestLog = new RequestLog();
         requestLog.setUserId(logDTO.getUserId());
@@ -87,7 +86,7 @@ public class RequestLog implements Serializable {
         requestLog.setName(logDTO.getName());
         requestLog.setClassMethod(logDTO.getClassMethod());
         return requestLog;
-    }
+    }*/
 
 
 }
